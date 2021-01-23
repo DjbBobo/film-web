@@ -1,4 +1,4 @@
-export default[
+export default [
     {
         path: '/',
         component: () => import('@/pages/layout'),
@@ -9,7 +9,7 @@ export default[
                 meta: {
                     isAuth: false
                 },
-                redirect: {name: 'dashboard'}
+                redirect: { name: 'dashboard' }
             },
             {
                 path: 'dashboard',
@@ -27,6 +27,13 @@ export default[
             isAuth: false
         },
         component: () => import('@/pages/search')
+    },
+    {
+        path: '/city',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/city')
     },
     {
         path: '/login',

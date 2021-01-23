@@ -15,20 +15,23 @@ import {
   Col,
   Row,
   Cell,
+  CellGroup,
   NavBar,
   Form,
   GoodsAction,
   GoodsActionIcon,
   GoodsActionButton,
   Sticky,
-  Swipe, 
+  Swipe,
   SwipeItem,
-  Grid, 
+  Grid,
   GridItem,
   Lazyload,
   Image,
   Card,
-  Divider
+  Divider,
+  IndexBar,
+  IndexAnchor
 } from 'vant'
 
 
@@ -40,6 +43,7 @@ Vue.use(Search)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Cell)
+Vue.use(CellGroup)
 Vue.use(NavBar)
 Vue.use(Form)
 Vue.use(GoodsAction);
@@ -54,6 +58,8 @@ Vue.use(Lazyload);
 Vue.use(Image);
 Vue.use(Card);
 Vue.use(Divider);
+Vue.use(IndexBar);
+Vue.use(IndexAnchor);
 
 Vue.config.productionTip = false
 
