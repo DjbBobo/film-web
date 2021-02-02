@@ -1,13 +1,6 @@
 <template>
   <div class="film-container">
-    <van-nav-bar>
-      <template #left>
-        <van-cell title="广州" icon="location-o" @click="goCity" />
-      </template>
-      <template #right>
-        <van-icon name="search" size="18" color="#ee0a24" class="search" @click="goSearch" />
-      </template>
-    </van-nav-bar>
+    <header-common search="film" />
     <van-tabs v-model="active" swipeable animated>
       <van-tab title="热映">
         <film-item type="hot" />
@@ -21,21 +14,19 @@
 
 <script>
 import filmItem from "../../components/filmItem";
+import headerCommon from "../../components/headerCommon";
+
 export default {
   components: {
-    filmItem
+    filmItem,
+    headerCommon
   },
   data() {
-    return {};
+    return {
+      active: 0
+    };
   },
-  methods: {
-    goSearch() {
-      this.$router.push({ path: "/search" });
-    },
-    goCity() {
-      this.$router.push({ path: "/city" });
-    }
-  }
+  methods: {}
 };
 </script>
 
