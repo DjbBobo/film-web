@@ -31,7 +31,11 @@ import {
   Card,
   Divider,
   IndexBar,
-  IndexAnchor
+  IndexAnchor,
+  Tab,
+  Tabs,
+  DropdownMenu,
+  DropdownItem
 } from 'vant'
 
 
@@ -60,6 +64,10 @@ Vue.use(Card);
 Vue.use(Divider);
 Vue.use(IndexBar);
 Vue.use(IndexAnchor);
+Vue.use(Tab);
+Vue.use(Tabs);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 
 Vue.config.productionTip = false
 

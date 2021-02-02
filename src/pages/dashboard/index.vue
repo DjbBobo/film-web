@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <header-bar />
     <header-swipe />
     <van-cell title="正在热映" is-link value="全部59部" title-style="font-weight:bold;color:#222222" />
     <film-swipe type="hot" />
@@ -9,11 +10,13 @@
 </template>
 
 <script>
+import headerBar from "./components/headBar";
 import headerSwipe from "./components/headerSwipe";
 import filmSwipe from "./components/filmSwipe";
 
 export default {
   components: {
+    headerBar,
     headerSwipe,
     filmSwipe
   },

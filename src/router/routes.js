@@ -18,22 +18,45 @@ export default [
                     isAuth: false
                 },
                 component: () => import('@/pages/dashboard')
-            }
+            },
+            {
+                path: 'city',
+                name: 'city',
+                meta: {
+                    isAuth: false
+                },
+                component: () => import('@/pages/city')
+            },
+            {
+                path: 'search',
+                name: 'search',
+                meta: {
+                    isAuth: false
+                },
+                component: () => import('@/pages/search')
+            },
+            {
+                path: '/film',
+                meta: {
+                    isAuth: false
+                },
+                component: () => import('@/pages/film')
+            },
+            {
+                path: '/cinema',
+                meta: {
+                    isAuth: false
+                },
+                component: () => import('@/pages/cinema')
+            },
+            {
+                path: '/mine',
+                meta: {
+                    isAuth: false
+                },
+                component: () => import('@/pages/mine')
+            },
         ]
-    },
-    {
-        path: '/search',
-        meta: {
-            isAuth: false
-        },
-        component: () => import('@/pages/search')
-    },
-    {
-        path: '/city',
-        meta: {
-            isAuth: false
-        },
-        component: () => import('@/pages/city')
     },
     {
         path: '/login',
