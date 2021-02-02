@@ -32,4 +32,8 @@ export default {
   padding-right: 0;
   padding-top: 5px;
 }
+
+.dashboard-container {
+  margin: 0 12px 0 12px;
+}
 </style>

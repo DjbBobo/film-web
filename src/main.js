@@ -35,7 +35,9 @@ import {
   Tab,
   Tabs,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Skeleton,
+  Tag
 } from 'vant'
 
 
@@ -68,6 +70,8 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Skeleton);
+Vue.use(Tag);
 
 Vue.config.productionTip = false
 

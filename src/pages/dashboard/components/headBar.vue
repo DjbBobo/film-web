@@ -27,4 +27,8 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.header-container {
+  margin: 0 12px 0 12px;
+}
+</style>
