@@ -64,5 +64,19 @@ export default [
             isAuth: false
         },
         component: () => import('@/pages/auth/login')
+    },
+    {
+        path: '/ticketCinema',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/ticketCinema')
+    },
+    {
+        path: '/filmCinema',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/filmCinema')
     }
 ]

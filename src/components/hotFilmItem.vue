@@ -14,7 +14,7 @@
     </van-row>
     <van-row class="film-btn-row">
       <van-col :span="24" class="film-btn-col">
-        <van-button type="danger" round size="small">购票</van-button>
+        <van-button type="danger" round size="small" to="/ticketCinema">购票</van-button>
       </van-col>
     </van-row>
   </div>
