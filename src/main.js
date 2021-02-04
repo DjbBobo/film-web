@@ -5,8 +5,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 import './font/iconfont.js'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/swiper-bundle.css'
 
 
 import {
@@ -40,7 +38,9 @@ import {
   DropdownMenu,
   DropdownItem,
   Skeleton,
-  Tag
+  Tag,
+  Toast,
+  Overlay
 } from 'vant'
 
 
@@ -75,7 +75,8 @@ Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 Vue.use(Skeleton);
 Vue.use(Tag);
-Vue.use(VueAwesomeSwiper)
+Vue.use(Toast);
+Vue.use(Overlay);
 
 Vue.config.productionTip = false
 

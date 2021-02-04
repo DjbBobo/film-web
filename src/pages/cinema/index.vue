@@ -7,7 +7,7 @@
       <van-dropdown-item v-model="value2" :options="option2" />
     </van-dropdown-menu>
 
-    <cinema-item />
+    <cinema-item @click.native="goFilmCinema" />
   </div>
 </template>
 
@@ -34,6 +34,11 @@ export default {
         { text: "销量排序", value: "c" }
       ]
     };
+  },
+  methods: {
+    goFilmCinema() {
+      this.$router.push({ path: "/filmCinema" });
+    }
   }
 };
 </script>
