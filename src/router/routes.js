@@ -78,5 +78,26 @@ export default [
             isAuth: false
         },
         component: () => import('@/pages/filmCinema')
+    },
+    {
+        path: '/seat',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/seat')
+    },
+    {
+        path: '/order',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/order')
+    },
+    {
+        path: '/pay',
+        meta: {
+            isAuth: false
+        },
+        component: () => import('@/pages/pay')
     }
 ]

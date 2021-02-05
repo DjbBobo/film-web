@@ -40,7 +40,12 @@ import {
   Skeleton,
   Tag,
   Toast,
-  Overlay
+  Overlay,
+  Collapse,
+  CollapseItem,
+  SubmitBar,
+  Checkbox,
+  CheckboxGroup
 } from 'vant'
 
 
@@ -77,6 +82,11 @@ Vue.use(Skeleton);
 Vue.use(Tag);
 Vue.use(Toast);
 Vue.use(Overlay);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
+Vue.use(SubmitBar);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
 
 Vue.config.productionTip = false
 

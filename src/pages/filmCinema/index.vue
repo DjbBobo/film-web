@@ -79,7 +79,7 @@
         </van-row>
       </van-col>
       <van-col span="4">
-        <van-button round type="warning" size="mini">购票</van-button>
+        <van-button round type="warning" size="mini" @click="goSeat">购票</van-button>
       </van-col>
     </van-row>
   </div>
@@ -99,6 +99,9 @@ export default {
     onClickSwipe(index) {
       // this.current = index;
       this.$refs.swipe.swipeTo(index);
+    },
+    goSeat() {
+      this.$router.push({ path: "/seat" });
     }
   }
 };
