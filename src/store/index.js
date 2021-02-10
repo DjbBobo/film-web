@@ -4,6 +4,7 @@ import headSwiper from './modules/headSwiper'
 import mainSwiper from './modules/mainSwiper'
 import cinema from './modules/cinema'
 import session from './modules/session'
+import sessionSeat from './modules/sessionSeat'
 
 
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
         headSwiper,
         mainSwiper,
         cinema,
-        session
+        session,
+        sessionSeat
     }
 })
 

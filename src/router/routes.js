@@ -82,6 +82,7 @@ export default [
     },
     {
         path: '/seat',
+        name: 'seat',
         meta: {
             isAuth: false
         },

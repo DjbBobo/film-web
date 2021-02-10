@@ -82,7 +82,7 @@
         </van-row>
       </van-col>
       <van-col span="4">
-        <van-button round type="warning" size="mini" @click="goSeat">购票</van-button>
+        <van-button round type="warning" size="mini" @click="goSeat(item)">购票</van-button>
       </van-col>
     </van-row>
   </div>
@@ -119,8 +119,16 @@ export default {
       // this.current = index;
       this.$refs.swipe.swipeTo(index);
     },
-    goSeat() {
-      this.$router.push({ path: "/seat" });
+    goSeat(item) {
+      this.$router.push({
+        name: "seat",
+        params: {
+          currentFilm: this.currentFilm,
+          cinemaName: this.name,
+          cinemaId: this.id,
+          session: item
+        }
+      });
     },
     getCinemaDetail(id) {
       this.$store.dispatch("cinema/get", id).then(res => {
@@ -145,7 +153,6 @@ export default {
         });
     },
     onClickTab() {
-      console.log(this.likeSessionStartTime);
       this.$store
         .dispatch("session/list", {
           filmId: this.currentFilm.id,
