@@ -24,33 +24,4 @@
 export default {};
 </script>
 
-<style lang="stylus" scoped>
-.film-image-row {
-  height: 60%;
-}
-
-.film-image-row .film-image-col {
-  height: 100%;
-}
-
-.film-image-row .film-image-col .van-image {
-  height: 100%;
-  position: relative;
-  border-radius: 4px;
-  border: 0.5px solid;
-}
-
-.film-image-row .film-image-col .van-image .film-score {
-  position: absolute;
-  bottom: 0;
-  margin: 0;
-  color: #E9B107;
-  box-shadow: 0 0 0.25rem rgba(95, 95, 95, 0.48);
-}
-
-.film-name-row .film-name-col {
-  font-size: 13px;
-  color: #222;
-  font-weight: bold;
-}
-</style>
+<style lang="stylus" scoped></style>

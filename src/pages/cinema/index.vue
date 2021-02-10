@@ -6,8 +6,13 @@
       <van-dropdown-item v-model="value1" :options="option1" />
       <van-dropdown-item v-model="value2" :options="option2" />
     </van-dropdown-menu>
-
-    <cinema-item @click.native="goFilmCinema" />
+    <cinema-item
+      @click.native="goFilmCinema(item.id,item.name,item.districtDetail)"
+      v-for="(item,index) in cinemaData"
+      :key="index"
+      :cinemaName="item.name"
+      :districtDetail="item.districtDetail"
+    />
   </div>
 </template>
 
@@ -18,6 +23,9 @@ export default {
   components: {
     headerCommon,
     cinemaItem
+  },
+  created() {
+    this.getCinemaData();
   },
   data() {
     return {
@@ -32,12 +40,21 @@ export default {
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
         { text: "销量排序", value: "c" }
-      ]
+      ],
+      cinemaData: []
     };
   },
   methods: {
-    goFilmCinema() {
-      this.$router.push({ path: "/filmCinema" });
+    goFilmCinema(id, name, districtDetail) {
+      this.$router.push({
+        name: "filmCinema",
+        params: { id: id, name: name, districtDetail: districtDetail }
+      });
+    },
+    getCinemaData() {
+      this.$store.dispatch("cinema/list").then(res => {
+        this.cinemaData = res;
+      });
     }
   }
 };

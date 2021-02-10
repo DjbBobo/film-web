@@ -74,6 +74,7 @@ export default [
     },
     {
         path: '/filmCinema',
+        name: 'filmCinema',
         meta: {
             isAuth: false
         },

@@ -1,9 +1,9 @@
 <template>
   <div class="cinema-item-container">
-    <van-card desc="普宁市普宁大道商业街北侧大南山路口西侧第一栋新达强">
+    <van-card :desc="districtDetail">
       <template #title>
         <van-row class="title">
-          <van-col span="20" class="cinema-name">超达美影城（普宁大道店）</van-col>
+          <van-col span="20" class="cinema-name">{{cinemaName}}</van-col>
           <van-col span="4" class="cinema-price-text">
             <span class="cinema-price">23.9</span>
             <span class="cinema-text">元起</span>
@@ -36,6 +36,14 @@
 
 <script>
 export default {
+  props: {
+    cinemaName: {
+      type: String
+    },
+    districtDetail: {
+      type: String
+    }
+  },
   data() {
     return {};
   }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
+    "axios": "^0.21.1",
     "better-scroll": "^2.2.0",
     "postcss-px2rem": "^0.3.0",
     "stylus": "0.52.4",

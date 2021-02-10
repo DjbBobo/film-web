@@ -45,7 +45,9 @@ import {
   CollapseItem,
   SubmitBar,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
+  Notify,
+  List
 } from 'vant'
 
 
@@ -87,6 +89,8 @@ Vue.use(CollapseItem);
 Vue.use(SubmitBar);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
+Vue.use(Notify);
+Vue.use(List);
 
 Vue.config.productionTip = false
 

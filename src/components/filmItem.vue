@@ -1,10 +1,6 @@
 <template>
   <div class="film-item-container">
-    <van-card
-      thumb="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-      title="拆弹专家2"
-      desc="导演 | 刘德华 岳云鹏"
-    >
+    <van-card :thumb="imageUrl" :title="filmName" desc="导演 | 刘德华 岳云鹏">
       <template #price>
         <span>2020-12-31 18:00 中国大陆上映</span>
       </template>
@@ -25,6 +21,12 @@
 export default {
   props: {
     type: {
+      type: String
+    },
+    imageUrl: {
+      type: String
+    },
+    filmName: {
       type: String
     }
   },

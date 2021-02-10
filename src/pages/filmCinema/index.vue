@@ -1,13 +1,13 @@
 <template>
   <div class="film-cinema-container">
-    <van-nav-bar title="中基国际影城（揭阳榕城店）" left-arrow>
+    <van-nav-bar :title="name" left-arrow>
       <template #right>
         <van-icon name="star-o" size="18" />
         <van-icon name="share-o" size="18" />
       </template>
     </van-nav-bar>
 
-    <van-cell center title="中基国际影城（揭阳榕城店）" label="榕城区榕东梅兜路中段东侧">
+    <van-cell center :title="name" :label="districtDetail">
       <template #right-icon>
         <van-icon name="location-o"></van-icon>
       </template>
@@ -24,11 +24,13 @@
       >
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
-        <van-swipe-item :class="0==current?'swipe-item-choose':''" @click="onClickSwipe(0)">
-          <van-image
-            class="swipe-item-image"
-            src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-          ></van-image>
+        <van-swipe-item
+          v-for="(item,index) in cinemaDetail.filmList"
+          :key="index"
+          :class="index==current?'swipe-item-choose':''"
+          @click="onClickSwipe(index)"
+        >
+          <van-image class="swipe-item-image" :src="item.image"></van-image>
         </van-swipe-item>
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
@@ -37,29 +39,30 @@
 
     <van-row class="film-info">
       <van-col offset="8" span="8">
-        拆弹专家
+        {{currentFilm.name}}
         <span class="score">9.3分</span>
       </van-col>
     </van-row>
 
-    <van-tabs>
-      <van-tab title="今天2月3日"></van-tab>
-      <van-tab title="明天2月4日"></van-tab>
-      <van-tab title="后天2月5日"></van-tab>
-      <van-tab title="周六2月6日"></van-tab>
-      <van-tab title="周日2月7日"></van-tab>
+    <van-tabs v-model="likeSessionStartTime" @click="onClickTab">
+      <van-tab
+        :title="formatDate(item.sessionStartTime)"
+        :name="formatYMD(item.sessionStartTime)"
+        v-for="(item,index) in sessionDate"
+        :key="index"
+      ></van-tab>
       <van-tab></van-tab>
     </van-tabs>
 
     <van-divider style="margin:0;" />
 
-    <van-row class="ticket-detail">
+    <van-row class="ticket-detail" v-for="(item,index) in sessionData" :key="index">
       <van-col span="4" class="first-col">
         <van-row class="start-time">
-          <van-col span="24">17:30</van-col>
+          <van-col span="24">{{formatTime(item.sessionStartTime)}}</van-col>
         </van-row>
         <van-row class="end-time">
-          <van-col span="24">19:38散场</van-col>
+          <van-col span="24">{{formatTime(item.sessionEndTime)}}散场</van-col>
         </van-row>
       </van-col>
       <van-col span="12" class="second-col">
@@ -87,14 +90,30 @@
 
 <script>
 export default {
+  created() {
+    this.id = this.$route.params.id;
+    this.name = this.$route.params.name;
+    this.districtDetail = this.$route.params.districtDetail;
+    this.getCinemaDetail(this.id);
+  },
   data() {
     return {
-      current: 0
+      current: 0,
+      id: 0,
+      name: "",
+      districtDetail: "",
+      cinemaDetail: {},
+      currentFilm: {},
+      sessionDate: [],
+      sessionData: [],
+      likeSessionStartTime: ""
     };
   },
   methods: {
     onSwiperChange(index) {
       this.current = index;
+      this.currentFilm = this.cinemaDetail.filmList[this.current];
+      this.getCinemaFilmSessions();
     },
     onClickSwipe(index) {
       // this.current = index;
@@ -102,6 +121,51 @@ export default {
     },
     goSeat() {
       this.$router.push({ path: "/seat" });
+    },
+    getCinemaDetail(id) {
+      this.$store.dispatch("cinema/get", id).then(res => {
+        this.cinemaDetail = res;
+        this.currentFilm = res.filmList[this.current];
+        this.getCinemaFilmSessions();
+      });
+    },
+    getCinemaFilmSessions() {
+      this.$store
+        .dispatch("session/cinemaFilmSessions", {
+          cinemaId: this.id,
+          filmId: this.currentFilm.id,
+          orderField: "sessionStartTime"
+        })
+        .then(res => {
+          this.sessionDate = res;
+          this.likeSessionStartTime = this.formatYMD(
+            this.sessionDate[0].sessionStartTime
+          );
+          this.onClickTab();
+        });
+    },
+    onClickTab() {
+      console.log(this.likeSessionStartTime);
+      this.$store
+        .dispatch("session/list", {
+          filmId: this.currentFilm.id,
+          likeSessionStartTime: this.likeSessionStartTime,
+          orderField: "sessionStartTime"
+        })
+        .then(res => {
+          this.sessionData = res;
+        });
+    },
+    formatDate(time) {
+      let date = new Date(time);
+      return date.getMonth() + 1 + "月" + date.getDate() + "日";
+    },
+    formatTime(time) {
+      let date = new Date(time);
+      return date.getHours() + ":" + date.getMinutes();
+    },
+    formatYMD(time) {
+      return time.split(" ")[0];
     }
   }
 };

@@ -1,35 +1,25 @@
 <template>
   <div class="header-swipe-container">
     <van-swipe class="header-swipe" :autoplay="2000" indicator-color="white">
-      <van-swipe-item>
-        <van-image
-          src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-        ></van-image>
-      </van-swipe-item>
-      <van-swipe-item>
-        <van-image
-          src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-        ></van-image>
-      </van-swipe-item>
-      <van-swipe-item>
-        <van-image
-          src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-        ></van-image>
-      </van-swipe-item>
-      <van-swipe-item>
-        <van-image
-          src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-        ></van-image>
+      <van-swipe-item v-for="(item,index) in headSwiperData" :key="index">
+        <van-image :src="item.imageUrl"></van-image>
       </van-swipe-item>
     </van-swipe>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState({
+      headSwiperData: state => state.headSwiper.list
+    })
+  },
   data() {
     return {};
-  }
+  },
+  methods: {}
 };
 </script>
 

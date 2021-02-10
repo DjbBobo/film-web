@@ -2,10 +2,20 @@
   <div class="dashboard-container">
     <header-bar />
     <header-swipe />
-    <van-cell title="正在热映" is-link value="全部59部" title-style="font-weight:bold;color:#222222" />
-    <film-swipe type="hot" />
-    <van-cell title="即将上映" is-link value="全部59部" title-style="font-weight:bold;color:#222222" />
-    <film-swipe type="coming" />
+    <van-cell
+      title="正在热映"
+      is-link
+      :value="'全部' + hotFilmCount +　'部'"
+      title-style="font-weight:bold;color:#222222"
+    />
+    <film-swipe :hotSwiperData="hotSwiperData" type="hot" />
+    <van-cell
+      title="即将上映"
+      is-link
+      :value="'全部' + comingFilmCount +'部'"
+      title-style="font-weight:bold;color:#222222"
+    />
+    <film-swipe :comingSwiperData="comingSwiperData" type="coming" />
   </div>
 </template>
 
@@ -20,8 +30,38 @@ export default {
     headerSwipe,
     filmSwipe
   },
+  created() {
+    this.getHeadSwiperDataList();
+    this.getMainSwiperDataList();
+  },
   data() {
-    return {};
+    return {
+      hotFilmCount: 0,
+      hotSwiperData: [],
+      comingSwiperData: [],
+      comingFilmCount: 0
+    };
+  },
+  methods: {
+    getHeadSwiperDataList() {
+      this.$store.dispatch("headSwiper/list", {
+        enable: 1,
+        orderField: "sort"
+      });
+    },
+    getMainSwiperDataList() {
+      this.$store
+        .dispatch("mainSwiper/list", {
+          enable: 1,
+          orderField: "sort"
+        })
+        .then(res => {
+          this.hotFilmCount = res.filter(item => item.type === 1).length;
+          this.hotSwiperData = res.filter(item => item.position === 1);
+          this.comingSwiperData = res.filter(item => item.position === 2);
+          this.comingFilmCount = res.filter(item => item.type === 2).length;
+        });
+    }
   }
 };
 </script>
