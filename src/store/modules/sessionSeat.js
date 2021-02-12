@@ -1,4 +1,5 @@
 import * as sessionSeatApi from '@/api/sessionSeat'
+import { updateBatch } from '../../api/sessionSeat'
 
 const state = {
     list: [],
@@ -36,6 +37,10 @@ const actions = {
         const sessionSeatResp = await sessionSeatApi.get(id)
         commit('SET_ITEM', sessionSeatResp.data)
         return sessionSeatResp.data
+    },
+    async updateBatch({ commit }, data) {
+        const sessionSeatResp = await sessionSeatApi.updateBatch(data)
+        return sessionSeatResp.code
     }
 }
 

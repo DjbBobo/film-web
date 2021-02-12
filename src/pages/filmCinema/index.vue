@@ -1,13 +1,13 @@
 <template>
   <div class="film-cinema-container">
-    <van-nav-bar :title="name" left-arrow>
+    <van-nav-bar :title="cinemaName" left-arrow>
       <template #right>
         <van-icon name="star-o" size="18" />
         <van-icon name="share-o" size="18" />
       </template>
     </van-nav-bar>
 
-    <van-cell center :title="name" :label="districtDetail">
+    <van-cell center :title="cinemaName" :label="cinemaDistrictDetail">
       <template #right-icon>
         <van-icon name="location-o"></van-icon>
       </template>
@@ -91,17 +91,21 @@
 <script>
 export default {
   created() {
-    this.id = this.$route.params.id;
-    this.name = this.$route.params.name;
-    this.districtDetail = this.$route.params.districtDetail;
-    this.getCinemaDetail(this.id);
+    // this.currentCinema = this.$route.query.currentCinema;
+    this.cinemaId = this.$route.query.cinemaId;
+    this.cinemaName = JSON.parse(this.$route.query.cinemaName);
+    this.cinemaDistrictDetail = JSON.parse(
+      this.$route.query.cinemaDistrictDetail
+    );
+    console.log(this.cinemaName);
+    this.getCinemaDetail(this.cinemaId);
   },
   data() {
     return {
       current: 0,
-      id: 0,
-      name: "",
-      districtDetail: "",
+      cinemaId: "",
+      cinemaName: "",
+      cinemaDistrictDetail: "",
       cinemaDetail: {},
       currentFilm: {},
       sessionDate: [],
@@ -121,12 +125,16 @@ export default {
     },
     goSeat(item) {
       this.$router.push({
-        name: "seat",
-        params: {
-          currentFilm: this.currentFilm,
-          cinemaName: this.name,
-          cinemaId: this.id,
-          session: item
+        path: "/seat",
+        query: {
+          filmId: this.currentFilm.id,
+          filmName: this.currentFilm.name,
+          filmImage: this.currentFilm.image,
+          cinemaName: this.cinemaName,
+          cinemaId: this.cinemaId,
+          sessionId: item.id,
+          sessionStartTime: item.sessionStartTime,
+          sessionEndTime: item.sessionEndTime
         }
       });
     },
@@ -140,7 +148,7 @@ export default {
     getCinemaFilmSessions() {
       this.$store
         .dispatch("session/cinemaFilmSessions", {
-          cinemaId: this.id,
+          cinemaId: this.cinemaId,
           filmId: this.currentFilm.id,
           orderField: "sessionStartTime"
         })

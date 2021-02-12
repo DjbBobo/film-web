@@ -22,3 +22,11 @@ export function get(id) {
         method: 'get'
     })
 }
+
+export function updateBatch(data) {
+    return request({
+        url: '/api/sessionSeat/updateBatch',
+        method: 'post',
+        data
+    })
+}

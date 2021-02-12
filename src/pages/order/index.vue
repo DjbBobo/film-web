@@ -1,20 +1,20 @@
 <template>
   <div class="order-container">
     <van-nav-bar left-arrow title="确认订单" @click-left="goBack"></van-nav-bar>
-    <van-card
-      num="2"
-      price="2.00"
-      thumb="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2621379901.webp"
-    >
+    <van-card num="2" price="2.00" :thumb="filmImage">
       <template #title>
-        <span class="title">拆弹专家2</span>
+        <span class="title">{{filmName}}</span>
       </template>
       <template #desc>
-        <van-row>今天 2月5日 21:20 粤语2D</van-row>
-        <van-row>大地影院（揭阳金城店）</van-row>
+        <van-row>{{formatMDHM(sessionStartTime,sessionEndTime)}}</van-row>
+        <van-row>{{cinemaName}}</van-row>
         <van-row>
           <van-col>1号极光厅</van-col>&nbsp;
-          <van-col offset="1">9排7座</van-col>
+          <van-col
+            offset="1"
+            v-for="(item,index) in chooseSeatList"
+            :key="index"
+          >{{item.row}}排{{item.col}}座</van-col>
         </van-row>
       </template>
     </van-card>
@@ -25,12 +25,60 @@
 
 <script>
 export default {
+  created() {
+    this.filmId = this.$route.query.filmId;
+    this.filmName = this.$route.query.filmName;
+    this.filmImage = this.$route.query.filmImage;
+    console.log(this.filmImage);
+    this.cinemaId = this.$route.query.cinemaId;
+    this.cinemaName = this.$route.query.cinemaName;
+    this.sessionId = this.$route.query.sessionId;
+    this.sessionStartTime = this.$route.query.sessionStartTime;
+    this.sessionEndTime = this.$route.query.sessionEndTime;
+    this.chooseSeatList = JSON.parse(this.$route.query.chooseSeatList);
+  },
+  data() {
+    return {
+      filmId: "",
+      filmName: "",
+      filmImage: "",
+      cinemaId: "",
+      cinemaName: "",
+      sessionId: "",
+      sessionStartTime: "",
+      sessionEndTime: "",
+      chooseSeatList: []
+    };
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
     },
     onSubmit() {
       this.$router.push({ path: "/pay" });
+    },
+    formatMDHM(sessionStartTime, sessionEndTime) {
+      let startDate = new Date(sessionStartTime);
+      let endDate = new Date(sessionEndTime);
+      const month = startDate.getMonth() + 1;
+      const day = startDate.getDate();
+      const startHours = startDate.getHours();
+      const startMinutes = startDate.getMinutes();
+      const endHours = endDate.getHours();
+      const endMinutes = endDate.getMinutes();
+      return (
+        month +
+        "月" +
+        day +
+        "日 " +
+        startHours +
+        ":" +
+        startMinutes +
+        "-" +
+        endHours +
+        ":" +
+        endMinutes
+      );
     }
   }
 };

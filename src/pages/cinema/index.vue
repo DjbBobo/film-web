@@ -7,7 +7,7 @@
       <van-dropdown-item v-model="value2" :options="option2" />
     </van-dropdown-menu>
     <cinema-item
-      @click.native="goFilmCinema(item.id,item.name,item.districtDetail)"
+      @click.native="goFilmCinema(item)"
       v-for="(item,index) in cinemaData"
       :key="index"
       :cinemaName="item.name"
@@ -45,10 +45,14 @@ export default {
     };
   },
   methods: {
-    goFilmCinema(id, name, districtDetail) {
+    goFilmCinema(cinema) {
       this.$router.push({
-        name: "filmCinema",
-        params: { id: id, name: name, districtDetail: districtDetail }
+        path: "/filmCinema",
+        query: {
+          cinemaId: cinema.id,
+          cinemaName: JSON.stringify(cinema.name),
+          cinemaDistrictDetail: JSON.stringify(cinema.districtDetail)
+        }
       });
     },
     getCinemaData() {

@@ -45,7 +45,7 @@
             @click="onClickSeat(seatItem,$event)"
           >
             <use
-              :xlink:href="seatItem.status === 1 ? '#icon-checkbox' : (seatItem.status === 2 ? '#icon-userrect': '#icon-checkbox-full')"
+              :xlink:href="seatItem.status === 1 ? '#icon-checkbox' : (seatItem.status === 2 || seatItem.status === 4 ? '#icon-userrect': '#icon-checkbox-full')"
             />
           </svg>
         </van-col>
@@ -58,7 +58,7 @@
           <van-collapse-item name="1" :is-link="false">
             <template #title>
               <van-row class="head">
-                <van-col span="8">{{currentFilm.name}}</van-col>
+                <van-col span="8">{{filmName}}</van-col>
                 <van-col span="16" style="text-align:right;">
                   <van-row>
                     切换场次
@@ -67,7 +67,7 @@
                 </van-col>
               </van-row>
               <van-row>
-                <van-col>{{formatTime(session)}}</van-col>
+                <van-col>{{formatTime(sessionStartTime,sessionEndTime)}}</van-col>
               </van-row>
             </template>
             <van-row class="ticket-time">
@@ -75,26 +75,26 @@
                 v-for="(item,index) in sessionList"
                 :key="index"
                 :class="[{'ticket-item-active':currentTicketItem === index},'ticket-item']"
-                @click="onTicketItemClick(index)"
+                @click="onTicketItemClick(index,item.id)"
               >
                 <van-row class="time">{{formatHM(item.sessionStartTime)}}</van-row>
                 <van-row class="type">国语2D</van-row>
                 <van-row class="price">23.9元起</van-row>
               </van-col>
             </van-row>
-            <van-row class="ticket-info">
-              <van-col class="info-item" v-for="(item,index) in chooseSeatList" :key="index">
-                <van-col>
-                  <van-row class="info">{{item.row}}排{{item.col}}座</van-row>
-                  <van-row class="price">23.9元</van-row>
-                </van-col>
-                <van-col>
-                  <van-icon name="cross" />
-                </van-col>
-              </van-col>
-            </van-row>
           </van-collapse-item>
         </van-collapse>
+        <van-row class="ticket-info">
+          <van-col class="info-item" v-for="(item,index) in chooseSeatList" :key="index">
+            <van-col>
+              <van-row class="info">{{item.row}}排{{item.col}}座</van-row>
+              <van-row class="price">23.9元</van-row>
+            </van-col>
+            <van-col>
+              <van-icon name="cross" />
+            </van-col>
+          </van-col>
+        </van-row>
       </van-row>
       <van-row class="buttom-row">
         <van-button type="warning" @click="goOrder">确认选座</van-button>
@@ -106,10 +106,14 @@
 <script>
 export default {
   created() {
-    this.currentFilm = this.$route.params.currentFilm;
-    this.cinemaName = this.$route.params.cinemaName;
-    this.cinemaId = this.$route.params.cinemaId;
-    this.session = this.$route.params.session;
+    this.filmId = this.$route.query.filmId;
+    this.filmName = this.$route.query.filmName;
+    this.filmImage = this.$route.query.filmImage;
+    this.cinemaId = this.$route.query.cinemaId;
+    this.cinemaName = this.$route.query.cinemaName;
+    this.sessionId = this.$route.query.sessionId;
+    this.sessionStartTime = this.$route.query.sessionStartTime;
+    this.sessionEndTime = this.$route.query.sessionEndTime;
     this.getSessionSeatList();
   },
   data() {
@@ -117,10 +121,14 @@ export default {
       activeNames: ["2"],
       arrow: "arrow-down",
       currentTicketItem: 0,
-      currentFilm: {},
+      filmId: "",
+      filmName: "",
+      filmImage: "",
       cinemaId: "",
       cinemaName: "",
-      session: "",
+      sessionId: "",
+      sessionStartTime: "",
+      sessionEndTime: "",
       sessionList: [],
       sessionSeatList: [],
       chooseSeatList: []
@@ -130,7 +138,7 @@ export default {
     getSessionSeatList() {
       this.$store
         .dispatch("sessionSeat/list", {
-          sessionId: this.session.id
+          sessionId: this.sessionId
         })
         .then(res => {
           this.sessionSeatList = res;
@@ -157,7 +165,6 @@ export default {
             this.$set(this.chooseSeatList, i, list[i]);
           }
         }
-        console.log(this.chooseSeatList);
       }
     },
     onChange() {
@@ -166,20 +173,58 @@ export default {
         this.$store
           .dispatch("session/list", {
             cinemaId: this.cinemaId,
-            filmId: this.currentFilm.id,
-            likeSessionStartTime: this.formatYMD(this.session.sessionStartTime)
+            filmId: this.filmId,
+            likeSessionStartTime: this.formatYMD(this.sessionStartTime)
           })
           .then(res => {
             this.sessionList = res;
           });
       }
     },
-    onTicketItemClick(index) {
+    onTicketItemClick(index, sessionId) {
       this.currentTicketItem = index;
-      console.log(this.currentTicketItem);
+      this.chooseSeatList = [];
+      this.sessionSeatList = [];
+      this.$store
+        .dispatch("sessionSeat/list", {
+          sessionId: sessionId
+        })
+        .then(res => {
+          this.sessionSeatList = res;
+        });
+      this.$store.dispatch("session/get/" + sessionId).then(res => {
+        this.session = res;
+      });
     },
     goOrder() {
-      this.$router.push({ path: "/order" });
+      if (this.chooseSeatList) {
+        this.chooseSeatList.forEach(sessionSeat => {
+          sessionSeat.status = 4;
+        });
+        this.$toast.loading({
+          message: "锁座中，请稍等...",
+          forbidClick: true
+        });
+        this.$store
+          .dispatch("sessionSeat/updateBatch", this.chooseSeatList)
+          .then(res => {
+            this.$toast.clear();
+            this.$router.push({
+              path: "/order",
+              query: {
+                filmId: this.filmId,
+                filmName: this.filmName,
+                filmImage: this.filmImage,
+                cinemaName: this.cinemaName,
+                cinemaId: this.cinemaId,
+                sessionId: this.sessionId,
+                sessionStartTime: this.sessionStartTime,
+                sessionEndTime: this.sessionEndTime,
+                chooseSeatList: JSON.stringify(this.chooseSeatList)
+              }
+            });
+          });
+      }
     },
     formatYMD(time) {
       return time.split(" ")[0];
@@ -188,9 +233,9 @@ export default {
       let date = new Date(sessionStartTime);
       return date.getHours() + ":" + date.getMinutes();
     },
-    formatTime(session) {
-      let startDate = new Date(session.sessionStartTime);
-      let endDate = new Date(session.sessionEndTime);
+    formatTime(sessionStartTime, sessionEndTime) {
+      let startDate = new Date(sessionStartTime);
+      let endDate = new Date(sessionEndTime);
       const month = startDate.getMonth() + 1;
       const day = startDate.getDate();
       const startHours = startDate.getHours();
@@ -305,7 +350,7 @@ export default {
   text-align: center;
   padding: 3px;
   background-color: #eee;
-  margin: 10px 5px 0 0;
+  margin: 10px 5px 0 10px;
   color: #000;
   font-size: 5px;
   display: flex;
