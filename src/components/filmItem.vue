@@ -7,7 +7,14 @@
       <template #tags>
         <van-row>
           <van-col offset="20" span="4">
-            <van-button v-if="type == 'hot'" type="danger" size="mini" round style="width:40px">购票</van-button>
+            <van-button
+              v-if="type == 'hot'"
+              type="danger"
+              size="mini"
+              round
+              style="width:40px"
+              :to="'/ticketCinema?filmId=' + filmId"
+            >购票</van-button>
             <van-button v-if="type == 'wait'" type="info" size="mini" round style="width:40px">预售</van-button>
           </van-col>
         </van-row>
@@ -27,6 +34,9 @@ export default {
       type: String
     },
     filmName: {
+      type: String
+    },
+    filmId: {
       type: String
     }
   },

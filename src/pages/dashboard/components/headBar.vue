@@ -22,12 +22,15 @@ import BMap from "BMap";
 export default {
   data() {
     return {
-      LocationCity: "正在定位"
+      LocationCity: this.$root.CITY
     };
   },
   mounted() {
-    this.getLocationCity();
-    console.log(this.LocationCity);
+    if (this.$root.CITY_ID == "") {
+      this.getLocationCity();
+    } else {
+      this.LOCATION_CITY = this.$root.CITY;
+    }
   },
   methods: {
     goSearch() {
@@ -45,12 +48,22 @@ export default {
           let city = position.address.city; //获取城市信息
           let province = position.address.province; //获取省份信息
           _this.LocationCity = city.substring(0, city.length - 1);
+          _this.$root.CITY = _this.LocationCity;
+          _this.setCityIdByShortName(_this.LocationCity);
         },
         function(e) {
-          _this.LocationCity = "定位失败";
+          _this.$root.LOCATION_CITY = "定位失败";
+          _this.LocationCity = _this.$root.LOCATION_CITY;
         },
         { provider: "baidu" }
       );
+    },
+    setCityIdByShortName(shortName) {
+      this.$store
+        .dispatch("district/list", { shortName: shortName })
+        .then(res => {
+          this.$root.CITY_ID = res[0].id;
+        });
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="order-container">
     <van-nav-bar left-arrow title="确认订单" @click-left="goBack"></van-nav-bar>
-    <van-card num="2" price="2.00" :thumb="filmImage">
+    <van-card :num="chooseSeatList.length" :price="price" :thumb="filmImage">
       <template #title>
         <span class="title">{{filmName}}</span>
       </template>
@@ -9,7 +9,7 @@
         <van-row>{{formatMDHM(sessionStartTime,sessionEndTime)}}</van-row>
         <van-row>{{cinemaName}}</van-row>
         <van-row>
-          <van-col>1号极光厅</van-col>&nbsp;
+          <van-col>{{hallName}}</van-col>&nbsp;
           <van-col
             offset="1"
             v-for="(item,index) in chooseSeatList"
@@ -19,7 +19,11 @@
       </template>
     </van-card>
 
-    <van-submit-bar :price="3050" button-text="提交订单" @submit="onSubmit" />
+    <van-submit-bar
+      :price="price * chooseSeatList.length * 100"
+      button-text="提交订单"
+      @submit="onSubmit"
+    />
   </div>
 </template>
 
@@ -29,13 +33,14 @@ export default {
     this.filmId = this.$route.query.filmId;
     this.filmName = this.$route.query.filmName;
     this.filmImage = this.$route.query.filmImage;
-    console.log(this.filmImage);
     this.cinemaId = this.$route.query.cinemaId;
     this.cinemaName = this.$route.query.cinemaName;
     this.sessionId = this.$route.query.sessionId;
     this.sessionStartTime = this.$route.query.sessionStartTime;
     this.sessionEndTime = this.$route.query.sessionEndTime;
+    this.hallName = this.$route.query.hallName;
     this.chooseSeatList = JSON.parse(this.$route.query.chooseSeatList);
+    this.price = this.$route.query.price;
   },
   data() {
     return {
@@ -47,7 +52,13 @@ export default {
       sessionId: "",
       sessionStartTime: "",
       sessionEndTime: "",
-      chooseSeatList: []
+      hallName: "",
+      chooseSeatList: [],
+      price: "",
+      orders: {
+        sessionId: "",
+        seatIds: ""
+      }
     };
   },
   methods: {
@@ -55,7 +66,15 @@ export default {
       this.$router.go(-1);
     },
     onSubmit() {
-      this.$router.push({ path: "/pay" });
+      this.orders.sessionId = this.sessionId;
+      this.orders.seatIds = this.chooseSeatList
+        .map(item => {
+          return item.id;
+        })
+        .toString();
+      this.$store.dispatch("orders/save", this.orders).then(res => {
+        this.$router.push({ path: "/pay" });
+      });
     },
     formatMDHM(sessionStartTime, sessionEndTime) {
       let startDate = new Date(sessionStartTime);

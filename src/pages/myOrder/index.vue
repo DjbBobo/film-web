@@ -1,0 +1,94 @@
+<template>
+  <div class="my-order-container">
+    <van-nav-bar @click-left="goBack">
+      <template #title>
+        <span>订单列表</span>
+      </template>
+      <template #left>
+        <van-icon name="arrow-left"></van-icon>
+      </template>
+    </van-nav-bar>
+
+    <van-cell-group v-for="(item,index) in orderList" :key="index">
+      <van-cell :title="item.cinemaName" :value="item.status == '1'?'支付剩余时间: 04:03':''" />
+      <van-card :num="item.seatList.length" :thumb="item.filmImage">
+        <template #title>
+          <span class="title">{{item.filmName}}</span>
+        </template>
+        <template #desc>
+          <van-row>{{formatYMDHM(item.sessionStartTime)}}</van-row>
+          <van-row>
+            <van-col>{{item.hallName}}</van-col>&nbsp;
+            <van-col
+              offset="1"
+              v-for="(seatItem,seatIndex) in item.seatList"
+              :key="seatIndex"
+            >{{seatItem.row}}排{{seatItem.col}}座</van-col>
+          </van-row>
+        </template>
+      </van-card>
+      <van-cell :title="'总价：'+item.price" :value="formatStatus(item.status)" />
+    </van-cell-group>
+  </div>
+</template>
+
+<script>
+export default {
+  mounted() {
+    // localStorage.setItem("userId", "1361258452256575490");
+    const userId = localStorage.getItem("userId");
+    this.$store
+      .dispatch("orders/list", {
+        sysUserId: userId,
+        orderField: "createTime",
+        order: "desc"
+      })
+      .then(res => {
+        this.orderList = res;
+        console.log(this.orderList);
+      });
+  },
+  data() {
+    return {
+      orderList: []
+    };
+  },
+  methods: {
+    formatStatus(status) {
+      if (status == "1") {
+        return "未支付";
+      } else if (status == "2") {
+        return "已支付";
+      }
+    },
+    formatYMDHM(sessionStartTime) {
+      let startDate = new Date(sessionStartTime);
+      const year = startDate.getFullYear();
+      const month = startDate.getMonth() + 1;
+      const day = startDate.getDate();
+      const startHours = startDate.getHours();
+      const startMinutes = startDate.getMinutes();
+      return (
+        year + "-" + month + "-" + day + "  " + startHours + ":" + startMinutes
+      );
+    },
+    goBack() {
+      this.$router.go(-1);
+    }
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+.van-nav-bar {
+  background-color: #e54847;
+}
+
+.van-nav-bar__title span {
+  color: #ffffff;
+}
+
+.van-nav-bar .van-icon {
+  color: #fff;
+}
+</style>

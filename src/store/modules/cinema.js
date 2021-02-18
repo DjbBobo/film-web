@@ -32,6 +32,11 @@ const actions = {
         commit('SET_LIST', cinemaListResp.data)
         return cinemaListResp.data
     },
+    async sesionCinemaList({ commit }, data) {
+        const cinemaListResp = await cinemaApi.sesionCinemaList(data)
+        commit('SET_LIST', cinemaListResp.data)
+        return cinemaListResp.data
+    },
     async get({ commit }, id) {
         const cinemaResp = await cinemaApi.get(id)
         commit('SET_ITEM', cinemaResp.data)

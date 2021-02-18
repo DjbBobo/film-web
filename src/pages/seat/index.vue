@@ -1,6 +1,6 @@
 <template>
   <div class="seat-container">
-    <van-nav-bar :title="cinemaName" left-arrow>
+    <van-nav-bar :title="cinemaName" left-arrow @click-left="goBack">
       <template #right>
         <van-icon name="share-o"></van-icon>
       </template>
@@ -74,12 +74,12 @@
               <van-col
                 v-for="(item,index) in sessionList"
                 :key="index"
-                :class="[{'ticket-item-active':currentTicketItem === index},'ticket-item']"
-                @click="onTicketItemClick(index,item.id)"
+                :class="[{'ticket-item-active':sessionId === item.id},'ticket-item']"
+                @click="onTicketItemClick(item.id)"
               >
                 <van-row class="time">{{formatHM(item.sessionStartTime)}}</van-row>
                 <van-row class="type">国语2D</van-row>
-                <van-row class="price">23.9元起</van-row>
+                <van-row class="price">{{item.price}}元起</van-row>
               </van-col>
             </van-row>
           </van-collapse-item>
@@ -88,7 +88,7 @@
           <van-col class="info-item" v-for="(item,index) in chooseSeatList" :key="index">
             <van-col>
               <van-row class="info">{{item.row}}排{{item.col}}座</van-row>
-              <van-row class="price">23.9元</van-row>
+              <van-row class="price">{{ticketPrice}}元</van-row>
             </van-col>
             <van-col>
               <van-icon name="cross" />
@@ -114,13 +114,14 @@ export default {
     this.sessionId = this.$route.query.sessionId;
     this.sessionStartTime = this.$route.query.sessionStartTime;
     this.sessionEndTime = this.$route.query.sessionEndTime;
+    this.hallName = this.$route.query.hallName;
+    this.ticketPrice = this.$route.query.ticketPrice;
     this.getSessionSeatList();
   },
   data() {
     return {
       activeNames: ["2"],
       arrow: "arrow-down",
-      currentTicketItem: 0,
       filmId: "",
       filmName: "",
       filmImage: "",
@@ -129,12 +130,17 @@ export default {
       sessionId: "",
       sessionStartTime: "",
       sessionEndTime: "",
+      hallName: "",
+      ticketPrice: "",
       sessionList: [],
       sessionSeatList: [],
       chooseSeatList: []
     };
   },
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     getSessionSeatList() {
       this.$store
         .dispatch("sessionSeat/list", {
@@ -181,8 +187,7 @@ export default {
           });
       }
     },
-    onTicketItemClick(index, sessionId) {
-      this.currentTicketItem = index;
+    onTicketItemClick(sessionId) {
       this.chooseSeatList = [];
       this.sessionSeatList = [];
       this.$store
@@ -192,8 +197,12 @@ export default {
         .then(res => {
           this.sessionSeatList = res;
         });
-      this.$store.dispatch("session/get/" + sessionId).then(res => {
-        this.session = res;
+      this.$store.dispatch("session/get", sessionId).then(res => {
+        this.sessionId = res.id;
+        this.sessionStartTime = res.sessionStartTime;
+        this.sessionEndTime = res.sessionEndTime;
+        this.hallName = res.hallName;
+        this.ticketPrice = res.price;
       });
     },
     goOrder() {
@@ -220,7 +229,9 @@ export default {
                 sessionId: this.sessionId,
                 sessionStartTime: this.sessionStartTime,
                 sessionEndTime: this.sessionEndTime,
-                chooseSeatList: JSON.stringify(this.chooseSeatList)
+                hallName: this.hallName,
+                chooseSeatList: JSON.stringify(this.chooseSeatList),
+                price: this.ticketPrice
               }
             });
           });

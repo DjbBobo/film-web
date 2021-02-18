@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { Notify } from 'vant';
+import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.ADMIN_ROOT, // url = base url + request url
+  baseURL: process.env.AUTH_ROOT, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
 })
@@ -10,8 +11,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-    config.headers.token = localStorage.getItem('token')
+    const token = getToken()
+    if (token && token !== 'undefined') {
+      config.headers.Authorization = token
+    }
 
     return config
   },
@@ -38,8 +41,8 @@ service.interceptors.response.use(
     const res = response.data
     // if the custom code is not 100, it is judged as an error.
     if (res.code !== 200) {
-      Notify({ type: 'danger', message: res.msg || 'Error check your token or method' });
-      return Promise.reject(new Error(res.msg || 'Error'))
+      Notify({ type: 'danger', message: res.message || 'Error check your token or method' });
+      return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
     }

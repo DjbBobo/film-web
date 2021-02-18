@@ -1,110 +1,67 @@
 <template>
   <div class="mine-container">
-    <van-nav-bar :border="false">
-      <template #left>
-        <van-image round width="2rem" height="2rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-        <span class="name">靓仔波</span>
+    <van-nav-bar>
+      <template #title>
+        <span>我的</span>
       </template>
       <template #right>
-        <van-icon name="bell" size="20" color="#fff" />
-        <van-icon name="setting" size="20" color="#fff" />
+        <van-icon name="wap-nav" color="#fff" />
       </template>
     </van-nav-bar>
-    <div class="card">
-      <van-row class="mine-order-title">我的订单</van-row>
-      <van-grid :border="false">
-        <van-grid-item text="电影票">
-          <template #icon>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-dianying" />
-            </svg>
-          </template>
-        </van-grid-item>
-        <van-grid-item />
-        <van-grid-item />
-        <van-grid-item />
-      </van-grid>
-    </div>
-
-    <van-row class="discount-title">
-      <van-col span="24">卡券中心</van-col>
+    <van-row class="image-row">
+      <van-col span="24">
+        <van-image round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+      </van-col>
     </van-row>
 
-    <van-grid :gutter="10" class="discount-content">
-      <van-grid-item text="优惠券" />
-      <van-grid-item text="折扣卡" />
-      <van-grid-item text="折扣卡" />
-    </van-grid>
+    <van-divider />
+
+    <van-cell title="我的订单" is-link to="/myOrder" />
+    <van-cell title="优惠卷" is-link />
+    <van-cell title="折扣卡" is-link />
   </div>
 </template>
 <script>
 export default {
+  mounted() {
+    this.$store.dispatch("auth/loginUser").then(res => {
+      if (!res) {
+        this.$router.push({ path: "/login" });
+        return;
+      }
+      this.user = res;
+    });
+  },
   data() {
-    return {};
+    return {
+      user: {}
+    };
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-.mine-container .van-nav-bar {
-  background-color: #E6203B;
-  height: 90px;
+.van-nav-bar {
+  background-color: #e54847;
 }
 
-.van-nav-bar__right .van-icon {
-  padding-left: 10px;
+.van-nav-bar__content span {
+  color: #fff;
+  font-size: 16px;
 }
 
-.van-nav-bar__left .name {
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 0.5rem;
-  margin-left: 1rem;
-}
-
-.card {
-  height: 100px;
-  margin: 0 14px;
-  position: relative;
-  top: -40px;
-  z-index: 1;
-}
-
-.mine-order-title {
-  padding: 5px 10px 5px 10px;
-  color: #383637;
-  font-size: 13px;
-  font-weight: bold;
-  background-color: #fff;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.van-grid {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-bottom: 1px solid #eee;
-  border-left: 1px solid #eee;
-  display: flex;
-  justify-content: center;
-}
-
-.icon {
-  width: 2em;
-  height: 2em;
-  vertical-align: -0.15em;
-  fill: currentColor;
+.image-row {
+  background-color: #f03d37;
+  background-image: url('https://s0.meituan.net/bs/file/?f=myfe/canary:static/deploy/dpmmweb/client/dpmmweb/component/mycenter/img/bg.png');
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 100% 150px;
+  height: 150px;
   overflow: hidden;
 }
 
-.discount-title .van-col {
-  padding: 5px 10px 5px 10px;
-  color: #383637;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.discount-content {
-  border: 0;
+.van-col {
+  margin: 20px 0;
+  text-align: center;
 }
 </style>

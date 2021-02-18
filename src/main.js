@@ -19,6 +19,7 @@ import {
   CellGroup,
   NavBar,
   Form,
+  Field,
   GoodsAction,
   GoodsActionIcon,
   GoodsActionButton,
@@ -47,7 +48,9 @@ import {
   Checkbox,
   CheckboxGroup,
   Notify,
-  List
+  List,
+  RadioGroup,
+  Radio
 } from 'vant'
 
 
@@ -62,6 +65,7 @@ Vue.use(Cell)
 Vue.use(CellGroup)
 Vue.use(NavBar)
 Vue.use(Form)
+Vue.use(Field);
 Vue.use(GoodsAction);
 Vue.use(GoodsActionButton);
 Vue.use(GoodsActionIcon);
@@ -91,6 +95,8 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Notify);
 Vue.use(List);
+Vue.use(Radio);
+Vue.use(RadioGroup);
 
 Vue.config.productionTip = false
 
@@ -100,5 +106,11 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data() {
+    return {
+      CITY: "正在定位",
+      CITY_ID: ""
+    }
+  }
 })

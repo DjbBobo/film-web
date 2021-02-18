@@ -9,6 +9,7 @@
           :key="index"
           :imageUrl="item.imageUrl"
           :filmName="item.filmName"
+          :filmId="item.filmId"
         />
       </van-tab>
       <van-tab title="待映">

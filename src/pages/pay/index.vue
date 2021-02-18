@@ -7,43 +7,47 @@
         <van-icon name="shop-o" size="30px" />
       </template>
       <template #title>
-        <van-row class="price">￥23.90</van-row>
-        <van-row class="order-no">订单编号:23232323232323</van-row>
+        <van-row class="price">￥{{orders.price}}</van-row>
+        <van-row class="order-no">订单编号:{{orders.orderNo}}</van-row>
       </template>
     </van-cell>
 
-    <van-cell center is-link>
-      <template #title>
-        <span class="custom-title">微信支付</span>
-        <van-tag type="danger">推荐</van-tag>
-      </template>
-      <template #icon>
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-weixinzhifu" />
-        </svg>
-      </template>
-      <template #right-icon>
-        <van-checkbox v-model="checked"></van-checkbox>
-      </template>
-    </van-cell>
-    <van-cell center is-link>
-      <template #title>
-        <span class="custom-title">支付宝支付</span>
-      </template>
-      <template #icon>
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-zhifubao" />
-        </svg>
-      </template>
-      <template #right-icon>
-        <van-checkbox v-model="checked"></van-checkbox>
-      </template>
-    </van-cell>
+    <van-radio-group v-model="radio">
+      <van-cell-group>
+        <van-cell clickable @click="radio = '1'">
+          <template #title>
+            <span class="custom-title">微信支付</span>
+            <van-tag type="danger">推荐</van-tag>
+          </template>
+          <template #icon>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-weixinzhifu" />
+            </svg>
+          </template>
+          <template #right-icon>
+            <van-radio name="1" />
+          </template>
+        </van-cell>
+        <van-cell clickable @click="radio = '2'">
+          <template #title>
+            <span class="custom-title">支付宝支付</span>
+          </template>
+          <template #icon>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-zhifubao" />
+            </svg>
+          </template>
+          <template #right-icon>
+            <van-radio name="2" />
+          </template>
+        </van-cell>
+      </van-cell-group>
+    </van-radio-group>
 
-    <van-button type="warning">
+    <van-button type="warning" @click="goAliPay">
       <van-row>
         <van-col>确认支付</van-col>
-        <van-col>￥23.90</van-col>
+        <van-col>￥{{orders.price}}</van-col>
       </van-row>
     </van-button>
   </div>
@@ -53,12 +57,42 @@
 export default {
   data() {
     return {
-      checked: true
+      radio: "1",
+      orders: {}
     };
+  },
+  mounted() {
+    this.getUnPayOrder();
   },
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    getUnPayOrder() {
+      this.$store
+        .dispatch("orders/list", {
+          sysUserId: localStorage.getItem("userId"),
+          status: "1",
+          orderField: "createTime",
+          order: "desc",
+          limit: "1"
+        })
+        .then(res => {
+          console.log(res);
+          if (!res) {
+            this.$router.push({ path: "/myOrder" });
+            return;
+          }
+          this.orders = res[0];
+        });
+    },
+    goAliPay() {
+      this.$store.dispatch("alipay/create", this.orders.id).then(res => {
+        const div = document.createElement("div");
+        div.innerHTML = res;
+        document.body.appendChild(div);
+        document.forms[0].submit();
+      });
     }
   }
 };

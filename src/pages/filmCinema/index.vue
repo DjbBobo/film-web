@@ -1,6 +1,6 @@
 <template>
   <div class="film-cinema-container">
-    <van-nav-bar :title="cinemaName" left-arrow>
+    <van-nav-bar :title="cinemaName" left-arrow @click-left="onClickLeft">
       <template #right>
         <van-icon name="star-o" size="18" />
         <van-icon name="share-o" size="18" />
@@ -70,12 +70,12 @@
           <van-col offset="4" span="20">国语2D</van-col>
         </van-row>
         <van-row class="place">
-          <van-col offset="4" span="20">2号厅</van-col>
+          <van-col offset="4" span="20">{{item.hallName}}</van-col>
         </van-row>
       </van-col>
       <van-col span="4" class="third-col">
         <van-row class="price">
-          <van-col span="24">38元</van-col>
+          <van-col span="24">{{item.price}}元</van-col>
         </van-row>
         <van-row>
           <van-col span="24"></van-col>
@@ -93,11 +93,8 @@ export default {
   created() {
     // this.currentCinema = this.$route.query.currentCinema;
     this.cinemaId = this.$route.query.cinemaId;
-    this.cinemaName = JSON.parse(this.$route.query.cinemaName);
-    this.cinemaDistrictDetail = JSON.parse(
-      this.$route.query.cinemaDistrictDetail
-    );
-    console.log(this.cinemaName);
+    this.cinemaName = this.$route.query.cinemaName;
+    this.cinemaDistrictDetail = this.$route.query.cinemaDistrictDetail;
     this.getCinemaDetail(this.cinemaId);
   },
   data() {
@@ -134,7 +131,9 @@ export default {
           cinemaId: this.cinemaId,
           sessionId: item.id,
           sessionStartTime: item.sessionStartTime,
-          sessionEndTime: item.sessionEndTime
+          sessionEndTime: item.sessionEndTime,
+          hallName: item.hallName,
+          ticketPrice: item.price
         }
       });
     },
@@ -181,6 +180,9 @@ export default {
     },
     formatYMD(time) {
       return time.split(" ")[0];
+    },
+    onClickLeft() {
+      this.$router.go(-1);
     }
   }
 };

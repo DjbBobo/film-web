@@ -84,21 +84,28 @@ export default [
         path: '/seat',
         name: 'seat',
         meta: {
-            isAuth: false
+            isAuth: true
         },
         component: () => import('@/pages/seat')
     },
     {
         path: '/order',
         meta: {
-            isAuth: false
+            isAuth: true
         },
         component: () => import('@/pages/order')
     },
     {
+        path: '/myOrder',
+        meta: {
+            isAuth: true
+        },
+        component: () => import('@/pages/myOrder')
+    },
+    {
         path: '/pay',
         meta: {
-            isAuth: false
+            isAuth: true
         },
         component: () => import('@/pages/pay')
     }

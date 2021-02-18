@@ -4,5 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  API_ROOT: '"/admin"'
+  ADMIN_ROOT: '"/admin"',
+  AUTH_ROOT: '"/auth"'
 })

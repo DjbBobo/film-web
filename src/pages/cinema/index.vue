@@ -50,11 +50,11 @@ export default {
         path: "/filmCinema",
         query: {
           cinemaId: cinema.id,
-          cinemaName: JSON.stringify(cinema.name),
-          cinemaDistrictDetail: JSON.stringify(cinema.districtDetail)
+          cinemaName: cinema.name,
+          cinemaDistrictDetail: cinema.districtDetail
         }
       });
-    },
+    } /*  */,
     getCinemaData() {
       this.$store.dispatch("cinema/list").then(res => {
         this.cinemaData = res;

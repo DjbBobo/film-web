@@ -14,6 +14,9 @@ module.exports = {
       '/admin': {
         target: 'http://localhost:8082'
       },
+      '/auth': {
+        target: 'http://localhost:8081'
+      },
       changeOrigin: true,
       pathRewrite: {
       }
