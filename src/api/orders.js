@@ -24,6 +24,14 @@ export function save(params) {
     })
 }
 
+export function update(params) {
+    return request({
+        url: '/api/orders',
+        method: 'put',
+        data: params
+    })
+}
+
 export function get(id) {
     return request({
         url: '/api/orders/' + id,

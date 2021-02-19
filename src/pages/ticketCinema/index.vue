@@ -1,6 +1,6 @@
 <template>
   <div class="ticket-cinama-container">
-    <van-nav-bar title="你好，李焕英" left-arrow @click-left="onClickLeft">
+    <van-nav-bar :title="filmName" left-arrow @click-left="onClickLeft">
       <template #right>
         <van-icon name="search" size="18" />
         <van-icon name="share-o" size="18" />
@@ -41,6 +41,7 @@ export default {
   mounted() {
     this.filmId = this.$route.query.filmId;
     this.getSessionList();
+    this.getFilmData();
   },
   data() {
     return {
@@ -57,6 +58,7 @@ export default {
         { text: "销量排序", value: "c" }
       ],
       filmId: "",
+      filmName: "",
       sessionList: [],
       cinemaList: []
     };
@@ -66,6 +68,7 @@ export default {
       this.$router.push({
         path: "/filmCinema",
         query: {
+          filmId: this.filmId,
           cinemaName: cinema.name,
           cinemaId: cinema.id,
           cinemaDistrictDetail: cinema.districtDetail
@@ -77,6 +80,11 @@ export default {
     },
     onClickTabs(name, title) {
       this.getSesionCinemaList(this.formatHead(name));
+    },
+    getFilmData() {
+      this.$store.dispatch("film/get", this.filmId).then(res => {
+        this.filmName = res.name;
+      });
     },
     getSessionList() {
       this.$store

@@ -56,9 +56,11 @@ export default {
       });
     } /*  */,
     getCinemaData() {
-      this.$store.dispatch("cinema/list").then(res => {
-        this.cinemaData = res;
-      });
+      this.$store
+        .dispatch("cinema/list", { cityId: this.$root.CITY_ID })
+        .then(res => {
+          this.cinemaData = res;
+        });
     }
   }
 };

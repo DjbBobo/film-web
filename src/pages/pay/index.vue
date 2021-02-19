@@ -41,10 +41,11 @@
             <van-radio name="2" />
           </template>
         </van-cell>
+        <van-cell title="测试支付" @click="testPay"></van-cell>
       </van-cell-group>
     </van-radio-group>
 
-    <van-button type="warning" @click="goAliPay">
+    <van-button class="pay-btn" type="warning" @click="goAliPay">
       <van-row>
         <van-col>确认支付</van-col>
         <van-col>￥{{orders.price}}</van-col>
@@ -80,7 +81,7 @@ export default {
         .then(res => {
           console.log(res);
           if (!res) {
-            this.$router.push({ path: "/myOrder" });
+            this.$router.go(-3);
             return;
           }
           this.orders = res[0];
@@ -93,6 +94,13 @@ export default {
         document.body.appendChild(div);
         document.forms[0].submit();
       });
+    },
+    testPay() {
+      this.$store
+        .dispatch("orders/update", { id: this.orders.id, status: "2" })
+        .then(res => {
+          this.getUnPayOrder();
+        });
     }
   }
 };
@@ -135,7 +143,7 @@ export default {
   background-color: #eee;
 }
 
-.van-button {
+.pay-btn {
   position: absolute;
   bottom: 10px;
   width: 100%;

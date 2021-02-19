@@ -25,6 +25,10 @@ const actions = {
         const ordersResp = await ordersApi.save(data)
         return ordersResp
     },
+    async update({ commit }, data) {
+        const ordersResp = await ordersApi.update(data)
+        return ordersResp
+    },
     async unPayOrder({ commit }) {
         const ordersResp = await ordersApi.unPayOrder()
         commit('SET_ITEM', ordersResp.data)

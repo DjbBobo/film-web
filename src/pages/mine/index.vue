@@ -10,7 +10,7 @@
     </van-nav-bar>
     <van-row class="image-row">
       <van-col span="24">
-        <van-image round width="5rem" height="5rem" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+        <van-image round width="5rem" height="5rem" :src="user.avatar" />
       </van-col>
     </van-row>
 

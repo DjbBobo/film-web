@@ -2,7 +2,7 @@
   <div class="header-common-container">
     <van-nav-bar>
       <template #left>
-        <van-cell title="广州" @click="goCity">
+        <van-cell :title="city" @click="goCity">
           <template #icon>
             <van-icon name="location-o" color="#ee0a24"></van-icon>
           </template>
@@ -19,7 +19,9 @@
 export default {
   props: ["search"],
   data() {
-    return {};
+    return {
+      city: this.$root.CITY
+    };
   },
   methods: {
     goSearch() {

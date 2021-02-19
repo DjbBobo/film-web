@@ -22,8 +22,8 @@
         :show-indicators="false"
         ref="swipe"
       >
-        <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
-        <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
+        <!-- <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
+        <van-swipe-item class="hidden-swiper-item"></van-swipe-item>-->
         <van-swipe-item
           v-for="(item,index) in cinemaDetail.filmList"
           :key="index"
@@ -34,13 +34,14 @@
         </van-swipe-item>
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
         <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
+        <van-swipe-item class="hidden-swiper-item"></van-swipe-item>
       </van-swipe>
     </div>
 
     <van-row class="film-info">
       <van-col offset="8" span="8">
         {{currentFilm.name}}
-        <span class="score">9.3分</span>
+        <span class="score">{{currentFilm.score}}</span>
       </van-col>
     </van-row>
 
@@ -90,8 +91,9 @@
 
 <script>
 export default {
-  created() {
+  mounted() {
     // this.currentCinema = this.$route.query.currentCinema;
+    this.filmId = this.$route.query.filmId;
     this.cinemaId = this.$route.query.cinemaId;
     this.cinemaName = this.$route.query.cinemaName;
     this.cinemaDistrictDetail = this.$route.query.cinemaDistrictDetail;
@@ -100,6 +102,7 @@ export default {
   data() {
     return {
       current: 0,
+      filmId: "",
       cinemaId: "",
       cinemaName: "",
       cinemaDistrictDetail: "",
@@ -107,7 +110,8 @@ export default {
       currentFilm: {},
       sessionDate: [],
       sessionData: [],
-      likeSessionStartTime: ""
+      likeSessionStartTime: "",
+      initialIndex: 0
     };
   },
   methods: {
@@ -115,6 +119,13 @@ export default {
       this.current = index;
       this.currentFilm = this.cinemaDetail.filmList[this.current];
       this.getCinemaFilmSessions();
+    },
+    initialSwiperIndex() {
+      this.cinemaDetail.filmList.filter((item, index) => {
+        if (item.id == this.filmId) {
+          this.onClickSwipe(index);
+        }
+      });
     },
     onClickSwipe(index) {
       // this.current = index;
@@ -142,6 +153,7 @@ export default {
         this.cinemaDetail = res;
         this.currentFilm = res.filmList[this.current];
         this.getCinemaFilmSessions();
+        this.initialSwiperIndex();
       });
     },
     getCinemaFilmSessions() {
@@ -152,6 +164,11 @@ export default {
           orderField: "sessionStartTime"
         })
         .then(res => {
+          if (res == null) {
+            this.sessionData = [];
+            this.sessionDate = [];
+            return;
+          }
           this.sessionDate = res;
           this.likeSessionStartTime = this.formatYMD(
             this.sessionDate[0].sessionStartTime
@@ -162,6 +179,7 @@ export default {
     onClickTab() {
       this.$store
         .dispatch("session/list", {
+          cinemaId: this.cinemaId,
           filmId: this.currentFilm.id,
           likeSessionStartTime: this.likeSessionStartTime,
           orderField: "sessionStartTime"

@@ -7,8 +7,23 @@
       @search="onSearch"
       @cancel="onCancel"
     ></van-search>
-    <film-item v-if="this.searchType === 'film'" />
-    <cinema-item v-if="this.searchType === 'cinema'" />
+    <span v-if="this.searchType === 'film'">
+      <film-item
+        v-for="(item,index) in filmList"
+        :key="index"
+        :imageUrl="item.image"
+        :filmName="item.name"
+        :filmId="item.id"
+      />
+    </span>
+    <span v-if="this.searchType === 'cinema'">
+      <cinema-item
+        v-for="(item,index) in cinemaList"
+        :key="index"
+        :cinemaName="item.name"
+        :districtDetail="item.districtDetail"
+      />
+    </span>
   </div>
 </template>
 
@@ -24,7 +39,9 @@ export default {
     return {
       searchValue: "",
       placeHolder: "请输入搜索内容",
-      searchType: ""
+      searchType: "",
+      filmList: [],
+      cinemaList: []
     };
   },
   created() {
@@ -38,7 +55,19 @@ export default {
     }
   },
   methods: {
-    onSearch() {},
+    onSearch(val) {
+      if (this.searchType == "film") {
+        this.$store.dispatch("film/list", { name: val }).then(res => {
+          this.filmList = res;
+        });
+      } else if (this.searchType == "cinema") {
+        this.$store
+          .dispatch("cinema/list", { name: val, cityId: this.$root.CITY_ID })
+          .then(res => {
+            this.cinemaList = res;
+          });
+      }
+    },
     onCancel() {
       this.$router.go(-1);
     }

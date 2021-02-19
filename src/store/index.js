@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import headSwiper from './modules/headSwiper'
 import mainSwiper from './modules/mainSwiper'
 import cinema from './modules/cinema'
+import film from './modules/film'
 import session from './modules/session'
 import sessionSeat from './modules/sessionSeat'
 import district from './modules/district'
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
         district,
         orders,
         alipay,
-        auth
+        auth,
+        film
     }
 })
 

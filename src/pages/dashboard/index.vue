@@ -7,6 +7,7 @@
       is-link
       :value="'全部' + hotFilmCount +　'部'"
       title-style="font-weight:bold;color:#222222"
+      @click="goFilm(0)"
     />
     <film-swipe :hotSwiperData="hotSwiperData" type="hot" />
     <van-cell
@@ -14,6 +15,7 @@
       is-link
       :value="'全部' + comingFilmCount +'部'"
       title-style="font-weight:bold;color:#222222"
+      @click="goFilm(1)"
     />
     <film-swipe :comingSwiperData="comingSwiperData" type="coming" />
   </div>
@@ -33,6 +35,7 @@ export default {
   created() {
     this.getHeadSwiperDataList();
     this.getMainSwiperDataList();
+    this.getFilmTypeList();
   },
   data() {
     return {
@@ -56,11 +59,18 @@ export default {
           orderField: "sort"
         })
         .then(res => {
-          this.hotFilmCount = res.filter(item => item.type === 1).length;
           this.hotSwiperData = res.filter(item => item.position === 1);
           this.comingSwiperData = res.filter(item => item.position === 2);
-          this.comingFilmCount = res.filter(item => item.type === 2).length;
         });
+    },
+    getFilmTypeList() {
+      this.$store.dispatch("film/filmTypeList").then(res => {
+        this.hotFilmCount = res.filter(item => item.type === 1).length;
+        this.comingFilmCount = res.filter(item => item.type === 2).length;
+      });
+    },
+    goFilm(val) {
+      this.$router.push({ path: "/film", query: { active: val } });
     }
   }
 };

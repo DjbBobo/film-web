@@ -1,8 +1,8 @@
 <template>
   <div class="film-item-container">
-    <van-card :thumb="imageUrl" :title="filmName" desc="导演 | 刘德华 岳云鹏">
+    <van-card :thumb="imageUrl" :title="filmName" :desc="'演员 | ' + actor">
       <template #price>
-        <span>2020-12-31 18:00 中国大陆上映</span>
+        <span>{{formatYMD(releaseTime)}} {{releasePlace}}上映</span>
       </template>
       <template #tags>
         <van-row>
@@ -38,13 +38,28 @@ export default {
     },
     filmId: {
       type: String
+    },
+    releaseTime: {
+      type: String
+    },
+    releasePlace: {
+      type: String
+    },
+    actor: {
+      type: String
     }
   },
   data() {
     return {};
   },
   methods: {
-    onSearch() {}
+    onSearch() {},
+    formatYMD(time) {
+      const date = new Date(time);
+      return (
+        date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+      );
+    }
   }
 };
 </script>
