@@ -10,7 +10,15 @@
     </van-nav-bar>
 
     <van-cell-group v-for="(item,index) in orderList" :key="index" @click="goPay(item.id)">
-      <van-cell :title="item.cinemaName" :value="item.status == '1'?'支付剩余时间: 04:03':''" />
+      <van-cell :title="item.cinemaName">
+        <template #default>
+          <van-count-down
+            v-if="item.status == '1'"
+            :time="(item.expireTime - Math.ceil(new Date().getTime() / 1000)) * 1000"
+            format="mm:ss"
+          />
+        </template>
+      </van-cell>
       <van-card :num="item.seatList.length" :thumb="item.filmImage">
         <template #title>
           <span class="title">{{item.filmName}}</span>

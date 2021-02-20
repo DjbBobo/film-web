@@ -9,6 +9,13 @@
       <template #title>
         <van-row class="price">￥{{orders.price}}</van-row>
         <van-row class="order-no">订单编号:{{orders.orderNo}}</van-row>
+        <van-row class="order-no">
+          支付剩余时间:
+          <van-count-down
+            :time="(orders.expireTime - Math.ceil(new Date().getTime() / 1000)) * 1000"
+            format="mm:ss"
+          />
+        </van-row>
       </template>
     </van-cell>
 
@@ -98,17 +105,31 @@ export default {
         });
     },
     goAliPay() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store.dispatch("alipay/create", this.orders.id).then(res => {
         const div = document.createElement("div");
         div.innerHTML = res;
         document.body.appendChild(div);
         document.forms[0].submit();
+        this.$toast.clear();
       });
+      // this.$store.dispatch("alipay/createWeb", this.orders.id).then(res => {
+      //   const div = document.createElement("div");
+      //   div.innerHTML = res;
+      //   document.body.appendChild(div);
+      //   document.forms[0].submit();
+      // });
     },
     testPay() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store
         .dispatch("orders/update", { id: this.orders.id, status: "2" })
         .then(res => {
+          this.$toast.clear();
           this.getOrderData(this.orders.id);
         });
     }

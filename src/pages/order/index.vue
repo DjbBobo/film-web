@@ -90,7 +90,11 @@ export default {
       this.$router.go(-1);
     },
     onSubmit() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store.dispatch("orders/save", this.orders).then(res => {
+        this.$toast.clear();
         this.$router.push({ path: "/pay", query: { orderId: res } });
       });
     },

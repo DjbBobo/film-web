@@ -80,6 +80,9 @@ export default {
       this.$router.go(-1);
     },
     onClickTabs(name, title) {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.getSesionCinemaList(this.formatHead(name));
     },
     getFilmData() {
@@ -88,6 +91,9 @@ export default {
       });
     },
     getSessionList() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store
         .dispatch("session/cinemaFilmSessions", {
           filmId: this.filmId,
@@ -108,6 +114,7 @@ export default {
           likeSessionStartTime: likeSessionStartTime
         })
         .then(res => {
+          this.$toast.clear();
           this.cinemaList = res;
         });
     },

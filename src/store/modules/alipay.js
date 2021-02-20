@@ -10,6 +10,10 @@ const actions = {
     async create({ commit }, orderId) {
         const alipayResp = await alipayApi.create(orderId)
         return alipayResp.data
+    },
+    async createWeb({ commit }, orderId) {
+        const alipayResp = await alipayApi.createWeb(orderId)
+        return alipayResp.data
     }
 }
 

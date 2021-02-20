@@ -7,4 +7,11 @@ export function create(orderId) {
     })
 }
 
+export function createWeb(orderId) {
+    return request({
+        url: '/api/alipay/createWeb/' + orderId,
+        method: 'get'
+    })
+}
+
 

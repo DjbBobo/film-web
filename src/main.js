@@ -50,7 +50,8 @@ import {
   Notify,
   List,
   RadioGroup,
-  Radio
+  Radio,
+  CountDown
 } from 'vant'
 
 
@@ -97,6 +98,7 @@ Vue.use(Notify);
 Vue.use(List);
 Vue.use(Radio);
 Vue.use(RadioGroup);
+Vue.use(CountDown);
 
 Vue.config.productionTip = false
 

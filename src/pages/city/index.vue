@@ -54,10 +54,14 @@ export default {
   watch: {},
   methods: {
     getCityList(shortName) {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store
         .dispatch("district/cityList", { shortName: shortName })
         .then(res => {
           this.cityList = res;
+          this.$toast.clear();
         });
     },
     onClickCity(district) {
