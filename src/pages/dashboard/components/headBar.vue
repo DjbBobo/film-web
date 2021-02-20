@@ -3,7 +3,7 @@
     <van-row>
       <van-col span="4">
         <van-cell
-          :title="LocationCity"
+          :title="this.$root.CITY"
           icon="location-o"
           style="padding:15px 0px 15px 0px"
           @click="goCity"
@@ -17,19 +17,17 @@
 </template>
 
 <script>
-import BMap from "BMap";
-
 export default {
   data() {
     return {
-      LocationCity: this.$root.CITY
+      city: ""
     };
   },
   mounted() {
-    if (this.$root.CITY_ID == "") {
+    if (this.$root.CITY == "正在定位") {
       this.getLocationCity();
     } else {
-      this.LOCATION_CITY = this.$root.CITY;
+      this.city = this.$root.CITY;
     }
   },
   methods: {
@@ -47,13 +45,12 @@ export default {
         function getinfo(position) {
           let city = position.address.city; //获取城市信息
           let province = position.address.province; //获取省份信息
-          _this.LocationCity = city.substring(0, city.length - 1);
-          _this.$root.CITY = _this.LocationCity;
-          _this.setCityIdByShortName(_this.LocationCity);
+          _this.$root.CITY = city.substring(0, city.length - 1);
+          _this.city = _this.$root.CITY;
+          _this.setCityIdByShortName(_this.$root.CITY);
         },
         function(e) {
-          _this.$root.LOCATION_CITY = "定位失败";
-          _this.LocationCity = _this.$root.LOCATION_CITY;
+          _this.$root.CITY = "定位失败";
         },
         { provider: "baidu" }
       );

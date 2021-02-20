@@ -15,6 +15,7 @@ const actions = {
     async login({ commit }, params) {
         const authResp = await authApi.login(params)
         const { sysUserId, token } = authResp.data
+        console.log(token)
         setToken(token)
         localStorage.setItem("userId", sysUserId);
         return authResp.data

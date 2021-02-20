@@ -23,7 +23,7 @@ const actions = {
     },
     async save({ commit }, data) {
         const ordersResp = await ordersApi.save(data)
-        return ordersResp
+        return ordersResp.data
     },
     async update({ commit }, data) {
         const ordersResp = await ordersApi.update(data)

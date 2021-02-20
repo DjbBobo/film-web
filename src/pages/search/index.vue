@@ -13,6 +13,9 @@
         :key="index"
         :imageUrl="item.image"
         :filmName="item.name"
+        :releaseTime="item.releaseTime"
+        :releasePlace="item.releasePlace"
+        :actor="item.actor"
         :filmId="item.id"
       />
     </span>
@@ -22,6 +25,7 @@
         :key="index"
         :cinemaName="item.name"
         :districtDetail="item.districtDetail"
+        :price="item.price"
       />
     </span>
   </div>
@@ -57,7 +61,10 @@ export default {
   methods: {
     onSearch(val) {
       if (this.searchType == "film") {
-        this.$store.dispatch("film/list", { name: val }).then(res => {
+        // this.$store.dispatch("film/list", { name: val }).then(res => {
+        //   this.filmList = res;
+        // });
+        this.$store.dispatch("film/filmTypeList", { name: val }).then(res => {
           this.filmList = res;
         });
       } else if (this.searchType == "cinema") {

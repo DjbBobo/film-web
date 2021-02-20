@@ -13,7 +13,7 @@
         <van-row class="film-image-row">
           <van-col class="film-image-col" :span="24">
             <van-image :src="item.imageUrl">
-              <h5 class="film-score">9.4</h5>
+              <h5 class="film-score">{{item.score}}</h5>
             </van-image>
           </van-col>
         </van-row>

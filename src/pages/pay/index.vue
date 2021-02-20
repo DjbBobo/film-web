@@ -63,11 +63,22 @@ export default {
     };
   },
   mounted() {
-    this.getUnPayOrder();
+    this.getOrderData(this.$route.query.orderId);
   },
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    getOrderData(orderId) {
+      this.$store
+        .dispatch("orders/list", { id: orderId, status: "1" })
+        .then(res => {
+          if (!res) {
+            this.$router.go(-3);
+            return;
+          }
+          this.orders = res[0];
+        });
     },
     getUnPayOrder() {
       this.$store
@@ -79,7 +90,6 @@ export default {
           limit: "1"
         })
         .then(res => {
-          console.log(res);
           if (!res) {
             this.$router.go(-3);
             return;
@@ -99,7 +109,7 @@ export default {
       this.$store
         .dispatch("orders/update", { id: this.orders.id, status: "2" })
         .then(res => {
-          this.getUnPayOrder();
+          this.getOrderData(this.orders.id);
         });
     }
   }

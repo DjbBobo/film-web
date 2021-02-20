@@ -40,7 +40,31 @@ export default {
     this.sessionEndTime = this.$route.query.sessionEndTime;
     this.hallName = this.$route.query.hallName;
     this.chooseSeatList = JSON.parse(this.$route.query.chooseSeatList);
+    this.orders.sessionId = this.sessionId;
+    this.orders.seatIds = this.chooseSeatList
+      .map(item => {
+        return item.seatId;
+      })
+      .toString();
+    this.orders.sessionSeatIds = this.chooseSeatList
+      .map(item => {
+        return item.id;
+      })
+      .toString();
     this.price = this.$route.query.price;
+
+    // 查询订单是否已创建
+    this.$store
+      .dispatch("orders/list", {
+        sessionId: this.orders.sessionId,
+        seatIds: this.orders.seatIds
+      })
+      .then(res => {
+        if (res != null) {
+          this.$router.go(-2);
+          return;
+        }
+      });
   },
   data() {
     return {
@@ -66,14 +90,8 @@ export default {
       this.$router.go(-1);
     },
     onSubmit() {
-      this.orders.sessionId = this.sessionId;
-      this.orders.seatIds = this.chooseSeatList
-        .map(item => {
-          return item.id;
-        })
-        .toString();
       this.$store.dispatch("orders/save", this.orders).then(res => {
-        this.$router.push({ path: "/pay" });
+        this.$router.push({ path: "/pay", query: { orderId: res } });
       });
     },
     formatMDHM(sessionStartTime, sessionEndTime) {

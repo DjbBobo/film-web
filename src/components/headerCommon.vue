@@ -16,12 +16,21 @@
 </template>
 
 <script>
+import BMap from "BMap";
+
 export default {
   props: ["search"],
   data() {
     return {
-      city: this.$root.CITY
+      city: ""
     };
+  },
+  mounted() {
+    if (this.$root.CITY == "正在定位") {
+      this.getLocationCity();
+    } else {
+      this.city = this.$root.CITY;
+    }
   },
   methods: {
     goSearch() {
@@ -32,6 +41,32 @@ export default {
     },
     goCity() {
       this.$router.push({ path: "/city" });
+    },
+    getLocationCity() {
+      //定义获取城市方法
+      const geolocation = new BMap.Geolocation();
+      var _this = this;
+      geolocation.getCurrentPosition(
+        function getinfo(position) {
+          let city = position.address.city; //获取城市信息
+          let province = position.address.province; //获取省份信息
+          _this.$root.CITY = city.substring(0, city.length - 1);
+          _this.city = _this.$root.CITY;
+          _this.setCityIdByShortName(_this.$root.CITY);
+        },
+        function(e) {
+          _this.$root.CITY = "定位失败";
+        },
+        { provider: "baidu" }
+      );
+    },
+    setCityIdByShortName(shortName) {
+      this.$store
+        .dispatch("district/list", { shortName: shortName })
+        .then(res => {
+          this.$root.CITY_ID = res[0].id;
+          this.$emit("getCinemaData", this.$root.CITY_ID);
+        });
     }
   }
 };

@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { Notify } from 'vant';
+import router from '../router'
+import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.ADMIN_ROOT, // url = base url + request url
@@ -10,9 +12,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-    config.headers.token = localStorage.getItem('token')
-
+    const token = getToken()
+    if (token && token !== 'undefined') {
+      config.headers.Authorization = token
+    }
     return config
   },
   error => {
@@ -36,6 +39,10 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
+    if (res == 'token无效') {
+      router.push('/login')
+      return
+    }
     // if the custom code is not 100, it is judged as an error.
     if (res.code !== 200) {
       Notify({ type: 'danger', message: res.msg || 'Error check your token or method' });

@@ -1,6 +1,6 @@
 <template>
   <div class="cinema-container">
-    <header-common search="cinema" />
+    <header-common search="cinema" @getCinemaData="getCinemaData" />
 
     <van-dropdown-menu>
       <van-dropdown-item v-model="value1" :options="option1" />
@@ -12,6 +12,7 @@
       :key="index"
       :cinemaName="item.name"
       :districtDetail="item.districtDetail"
+      :price="item.price"
     />
   </div>
 </template>
@@ -25,7 +26,9 @@ export default {
     cinemaItem
   },
   created() {
-    this.getCinemaData();
+    if (this.$root.CITY_ID != "") {
+      this.getCinemaData(this.$root.CITY_ID);
+    }
   },
   data() {
     return {
@@ -55,12 +58,10 @@ export default {
         }
       });
     } /*  */,
-    getCinemaData() {
-      this.$store
-        .dispatch("cinema/list", { cityId: this.$root.CITY_ID })
-        .then(res => {
-          this.cinemaData = res;
-        });
+    getCinemaData(cityId) {
+      this.$store.dispatch("cinema/list", { cityId: cityId }).then(res => {
+        this.cinemaData = res;
+      });
     }
   }
 };

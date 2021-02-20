@@ -52,7 +52,7 @@ export default [
             {
                 path: '/mine',
                 meta: {
-                    isAuth: false
+                    isAuth: true
                 },
                 component: () => import('@/pages/mine')
             },

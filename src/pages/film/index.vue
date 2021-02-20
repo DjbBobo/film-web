@@ -24,6 +24,7 @@
           :filmName="item.name"
           :releaseTime="item.releaseTime"
           :releasePlace="item.releasePlace"
+          :actor="item.actor"
         />
       </van-tab>
     </van-tabs>

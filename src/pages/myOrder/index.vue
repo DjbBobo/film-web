@@ -9,7 +9,7 @@
       </template>
     </van-nav-bar>
 
-    <van-cell-group v-for="(item,index) in orderList" :key="index">
+    <van-cell-group v-for="(item,index) in orderList" :key="index" @click="goPay(item.id)">
       <van-cell :title="item.cinemaName" :value="item.status == '1'?'支付剩余时间: 04:03':''" />
       <van-card :num="item.seatList.length" :thumb="item.filmImage">
         <template #title>
@@ -45,7 +45,6 @@ export default {
       })
       .then(res => {
         this.orderList = res;
-        console.log(this.orderList);
       });
   },
   data() {
@@ -54,6 +53,9 @@ export default {
     };
   },
   methods: {
+    goPay(id) {
+      this.$router.push({ path: "/pay", query: { orderId: id } });
+    },
     formatStatus(status) {
       if (status == "1") {
         return "未支付";

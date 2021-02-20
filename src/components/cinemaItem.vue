@@ -5,7 +5,7 @@
         <van-row class="title">
           <van-col span="20" class="cinema-name">{{cinemaName}}</van-col>
           <van-col span="4" class="cinema-price-text">
-            <span class="cinema-price">23.9</span>
+            <span class="cinema-price">{{price}}</span>
             <span class="cinema-text">元起</span>
           </van-col>
         </van-row>
@@ -42,6 +42,9 @@ export default {
     },
     districtDetail: {
       type: String
+    },
+    price: {
+      type: Number
     }
   },
   data() {

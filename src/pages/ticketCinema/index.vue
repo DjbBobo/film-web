@@ -26,6 +26,7 @@
       :key="index"
       :cinemaName="item.name"
       :districtDetail="item.districtDetail"
+      :price="item.price"
       @click.native="goFilmCinema(item)"
     />
   </div>
