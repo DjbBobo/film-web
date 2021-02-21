@@ -4,7 +4,7 @@ import router from '../router'
 import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.ADMIN_ROOT, // url = base url + request url
+  baseURL: process.env.BASE_ROOT, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
 })
@@ -39,9 +39,10 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    if (res == 'token无效') {
+    if (res.code == 200401) {
+      Notify({ type: 'danger', message: '请登陆' });
       router.push('/login')
-      return
+      return res
     }
     // if the custom code is not 100, it is judged as an error.
     if (res.code !== 200) {

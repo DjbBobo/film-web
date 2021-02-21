@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function cityList(params) {
     return request({
-        url: '/api/district/cityList',
+        url: '/admin/api/district/cityList',
         method: 'get',
         params
     })
@@ -11,7 +11,7 @@ export function cityList(params) {
 
 export function list(params) {
     return request({
-        url: '/api/district/list',
+        url: '/admin/api/district/list',
         method: 'get',
         params
     })

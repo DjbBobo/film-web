@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <van-nav-bar title="注册登录" left-arrow></van-nav-bar>
+    <van-nav-bar title="注册登录" left-arrow @click-left="goBack"></van-nav-bar>
     <van-form @submit="onSubmit">
       <van-field
         v-model="sysUser.mobile"
@@ -80,6 +80,9 @@ export default {
     },
     validator(val) {
       return /^1[3456789]\d{9}$/.test(val);
+    },
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };

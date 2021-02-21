@@ -32,7 +32,7 @@ export default {
     headerSwipe,
     filmSwipe
   },
-  created() {
+  mounted() {
     this.getHeadSwiperDataList();
     this.getMainSwiperDataList();
     this.getFilmTypeList();

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function page(params) {
     return request({
-        url: '/api/sessionSeat/page',
+        url: '/admin/api/sessionSeat/page',
         method: 'get',
         params
     })
@@ -10,7 +10,7 @@ export function page(params) {
 
 export function list(params) {
     return request({
-        url: '/api/sessionSeat/list',
+        url: '/admin/api/sessionSeat/list',
         method: 'get',
         params
     })
@@ -18,14 +18,14 @@ export function list(params) {
 
 export function get(id) {
     return request({
-        url: '/api/sessionSeat/' + id,
+        url: '/admin/api/sessionSeat/' + id,
         method: 'get'
     })
 }
 
 export function updateBatch(data) {
     return request({
-        url: '/api/sessionSeat/updateBatch',
+        url: '/admin/api/sessionSeat/updateBatch',
         method: 'post',
         data
     })

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function page(params) {
     return request({
-        url: '/api/orders/page',
+        url: '/admin/api/orders/page',
         method: 'get',
         params
     })
@@ -10,7 +10,7 @@ export function page(params) {
 
 export function list(params) {
     return request({
-        url: '/api/orders/list',
+        url: '/admin/api/orders/list',
         method: 'get',
         params
     })
@@ -18,7 +18,7 @@ export function list(params) {
 
 export function save(params) {
     return request({
-        url: '/api/orders',
+        url: '/admin/api/orders',
         method: 'post',
         data: params
     })
@@ -26,7 +26,7 @@ export function save(params) {
 
 export function update(params) {
     return request({
-        url: '/api/orders',
+        url: '/admin/api/orders',
         method: 'put',
         data: params
     })
@@ -34,14 +34,14 @@ export function update(params) {
 
 export function get(id) {
     return request({
-        url: '/api/orders/' + id,
+        url: '/admin/api/orders/' + id,
         method: 'get'
     })
 }
 
 export function unPayOrder() {
     return request({
-        url: '/api/orders/unPayOrder',
+        url: '/admin/api/orders/unPayOrder',
         method: 'get'
     })
 }

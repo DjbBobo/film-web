@@ -41,13 +41,7 @@ export default {
     filmItem,
     headerCommon
   },
-  // computed: {
-  //   ...mapState({
-  //     mainSwiperData: state => state.mainSwiper.list
-  //   })
-  // },
   mounted() {
-    // this.filterFilmData();
     this.getFilmTypeList();
     this.active =
       this.$route.query.active == undefined
@@ -63,15 +57,15 @@ export default {
   },
   methods: {
     getFilmTypeList() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store.dispatch("film/filmTypeList").then(res => {
         this.hotFilmData = res.filter(item => item.type === 1);
         this.comingFilmData = res.filter(item => item.type === 2);
+        this.$toast.clear();
       });
     }
-    // filterFilmData() {
-    //   this.hotFilmData = this.mainSwiperData.filter(item => item.type === 1);
-    //   this.comingFilmData = this.mainSwiperData.filter(item => item.type === 2);
-    // }
   }
 };
 </script>

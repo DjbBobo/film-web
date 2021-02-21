@@ -126,12 +126,14 @@ export default {
       this.$toast.loading({
         forbidClick: true
       });
-      this.$store
-        .dispatch("orders/update", { id: this.orders.id, status: "2" })
-        .then(res => {
-          this.$toast.clear();
-          this.getOrderData(this.orders.id);
+      this.$store.dispatch("alipay/testPay", this.orders.id).then(res => {
+        this.$toast.success({
+          message: "支付成功",
+          duration: 500
         });
+        this.$toast.clear();
+        this.getOrderData(this.orders.id);
+      });
     }
   }
 };

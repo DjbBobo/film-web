@@ -14,6 +14,9 @@ const actions = {
     async createWeb({ commit }, orderId) {
         const alipayResp = await alipayApi.createWeb(orderId)
         return alipayResp.data
+    },
+    async testPay({ commit }, orderId) {
+        await alipayApi.testPay(orderId)
     }
 }
 

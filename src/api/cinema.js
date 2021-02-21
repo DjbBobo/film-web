@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function page(params) {
     return request({
-        url: '/api/cinema/page',
+        url: '/admin/api/cinema/page',
         method: 'get',
         params
     })
@@ -10,7 +10,7 @@ export function page(params) {
 
 export function list(params) {
     return request({
-        url: '/api/cinema/list',
+        url: '/admin/api/cinema/list',
         method: 'get',
         params
     })
@@ -18,7 +18,7 @@ export function list(params) {
 
 export function sesionCinemaList(params) {
     return request({
-        url: '/api/cinema/sesionCinemaList',
+        url: '/admin/api/cinema/sesionCinemaList',
         method: 'get',
         params
     })
@@ -26,7 +26,7 @@ export function sesionCinemaList(params) {
 
 export function get(id) {
     return request({
-        url: '/api/cinema/' + id,
+        url: '/admin/api/cinema/' + id,
         method: 'get'
     })
 }

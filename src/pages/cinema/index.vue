@@ -59,8 +59,12 @@ export default {
       });
     } /*  */,
     getCinemaData(cityId) {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store.dispatch("cinema/list", { cityId: cityId }).then(res => {
         this.cinemaData = res;
+        this.$toast.clear();
       });
     }
   }

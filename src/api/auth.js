@@ -1,8 +1,8 @@
-import request from '@/utils/authRequest'
+import request from '@/utils/request'
 
 export function login(params) {
     return request({
-        url: '/api/login',
+        url: '/auth/api/login',
         method: 'post',
         data: params
     })
@@ -10,14 +10,14 @@ export function login(params) {
 
 export function logout() {
     return request({
-        url: '/api/logout',
+        url: '/auth/api/logout',
         method: 'post'
     })
 }
 
 export function captcha(params) {
     return request({
-        url: '/api/captcha',
+        url: '/auth/api/captcha',
         method: 'post',
         params
     })
@@ -25,7 +25,7 @@ export function captcha(params) {
 
 export function loginUser() {
     return request({
-        url: '/api/loginUser',
+        url: '/auth/api/loginUser',
         method: 'get'
     })
 }

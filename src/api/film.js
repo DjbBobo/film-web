@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function page(params) {
     return request({
-        url: '/api/film/page',
+        url: '/admin/api/film/page',
         method: 'get',
         params
     })
@@ -10,7 +10,7 @@ export function page(params) {
 
 export function list(params) {
     return request({
-        url: '/api/film/list',
+        url: '/admin/api/film/list',
         method: 'get',
         params
     })
@@ -18,7 +18,7 @@ export function list(params) {
 
 export function filmTypeList(params) {
     return request({
-        url: '/api/film/filmTypeList',
+        url: '/admin/api/film/filmTypeList',
         method: 'get',
         params
     })
@@ -26,7 +26,7 @@ export function filmTypeList(params) {
 
 export function get(id) {
     return request({
-        url: '/api/film/' + id,
+        url: '/admin/api/film/' + id,
         method: 'get'
     })
 }
