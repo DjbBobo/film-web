@@ -45,7 +45,7 @@
         <van-row class="film-image-row">
           <van-col class="film-image-col" :span="24">
             <van-image :src="item.imageUrl">
-              <h5 class="film-score"></h5>
+              <h5 class="film-score">{{item.personNum == 0 ? '':item.personNum + ' 人想看'}}</h5>
             </van-image>
           </van-col>
         </van-row>
@@ -57,7 +57,12 @@
         </van-row>
         <van-row class="film-btn-row">
           <van-col :span="24" class="film-btn-col">
-            <van-button color="#F9AF02" round size="small">想看</van-button>
+            <van-button
+              :color="item.status == 1 ? '#F9AF02':'#EBEDF0'"
+              round
+              size="small"
+              @click="wantLook(item,item.id)"
+            >{{item.status == 1 ? '想看':'已想看'}}</van-button>
           </van-col>
         </van-row>
       </van-swipe-item>
@@ -92,6 +97,17 @@ export default {
     return {};
   },
   methods: {
+    wantLook(item, filmId) {
+      this.$store.dispatch("film/wantLook", filmId);
+      // this.$emit("getMainSwiperDataList");
+      if (item.status == 1) {
+        item.personNum = item.personNum + 1;
+        item.status = 2;
+      } else {
+        item.personNum = item.personNum - 1;
+        item.status = 1;
+      }
+    },
     formatDate(time) {
       let date = new Date(time);
       const month = date.getMonth() + 1;

@@ -17,7 +17,11 @@
       title-style="font-weight:bold;color:#222222"
       @click="goFilm(1)"
     />
-    <film-swipe :comingSwiperData="comingSwiperData" type="coming" />
+    <film-swipe
+      :comingSwiperData="comingSwiperData"
+      type="coming"
+      @getMainSwiperDataList="getMainSwiperDataList"
+    />
   </div>
 </template>
 

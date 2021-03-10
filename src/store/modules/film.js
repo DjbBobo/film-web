@@ -42,6 +42,9 @@ const actions = {
         const filmResp = await filmApi.get(id)
         commit('SET_ITEM', filmResp.data)
         return filmResp.data
+    },
+    async wantLook({ commit }, id) {
+        const filmResp = await filmApi.wantLook(id)
     }
 }
 

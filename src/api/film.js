@@ -30,3 +30,13 @@ export function get(id) {
         method: 'get'
     })
 }
+
+export function wantLook(id) {
+    return request({
+        url: '/admin/api/film/wantLook',
+        method: 'post',
+        params: {
+            filmId: id
+        }
+    })
+}
