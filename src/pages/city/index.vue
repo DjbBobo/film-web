@@ -74,18 +74,36 @@ export default {
       //定义获取城市方法
       const geolocation = new BMap.Geolocation();
       var _this = this;
-      geolocation.getCurrentPosition(
-        function getinfo(position) {
-          let city = position.address.city; //获取城市信息
-          let province = position.address.province; //获取省份信息
-          _this.locationCity.shortName = city.substring(0, city.length - 1);
-          _this.setCityIdByShortName(_this.locationCity.shortName);
-        },
-        function(e) {
-          _this.locationCity = "定位失败";
-        },
-        { provider: "baidu" }
-      );
+      // geolocation.getCurrentPosition(
+      //   function getinfo(position) {
+      //     let city = position.address.city; //获取城市信息
+      //     let province = position.address.province; //获取省份信息
+      //     _this.locationCity.shortName = city.substring(0, city.length - 1);
+      //     _this.setCityIdByShortName(_this.locationCity.shortName);
+      //   },
+      //   function(e) {
+      //     _this.locationCity = "定位失败";
+      //   },
+      //   { provider: "baidu" }
+      // );
+      var myGeo = new BMap.Geocoder();
+      geolocation.getCurrentPosition(function(r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+          var pt = r.point;
+          // 根据坐标得到地址描述
+          myGeo.getLocation(pt, function(result) {
+            if (result) {
+              var addComp = result.addressComponents;
+              // alert(addComp.province + "," + addComp.city);
+              _this.locationCity.shortName = addComp.city.substring(
+                0,
+                addComp.city.length - 1
+              );
+              _this.setCityIdByShortName(_this.locationCity.shortName);
+            }
+          });
+        }
+      });
     },
     setCityIdByShortName(shortName) {
       this.$store

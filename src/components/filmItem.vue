@@ -21,7 +21,7 @@
               size="mini"
               round
               style="width:40px"
-            >预售</van-button>
+            >想看</van-button>
           </van-col>
         </van-row>
       </template>

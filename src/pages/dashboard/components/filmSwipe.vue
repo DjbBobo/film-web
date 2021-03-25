@@ -61,7 +61,7 @@
               :color="item.status == 1 ? '#F9AF02':'#EBEDF0'"
               round
               size="small"
-              @click="wantLook(item,item.id)"
+              @click="wantLook(item,item.filmId)"
             >{{item.status == 1 ? '想看':'已想看'}}</van-button>
           </van-col>
         </van-row>

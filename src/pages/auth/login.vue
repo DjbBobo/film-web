@@ -51,6 +51,9 @@ export default {
   },
   methods: {
     sendSms() {
+      this.$toast.loading({
+        forbidClick: true
+      });
       if (!this.validator(this.sysUser.mobile)) {
         this.$toast("手机格式有误");
         return;
@@ -74,7 +77,11 @@ export default {
       }
     },
     onSubmit(values) {
+      this.$toast.loading({
+        forbidClick: true
+      });
       this.$store.dispatch("auth/login", values).then(res => {
+        this.$toast.clear();
         this.$router.go(-1);
       });
     },

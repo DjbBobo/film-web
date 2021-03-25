@@ -62,7 +62,11 @@ export default {
   },
   methods: {
     goPay(id) {
-      this.$router.push({ path: "/pay", query: { orderId: id } });
+      this.$store.dispatch("orders/get", id).then(res => {
+        if (res.status == 1) {
+          this.$router.push({ path: "/pay", query: { orderId: id } });
+        }
+      });
     },
     formatStatus(status) {
       if (status == "1") {
@@ -83,7 +87,7 @@ export default {
       );
     },
     goBack() {
-      this.$router.go(-1);
+      this.$router.push({ path: "/mine" });
     }
   }
 };

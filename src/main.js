@@ -11,6 +11,7 @@ import {
   Button,
   Icon,
   Tabbar,
+  Dialog,
   TabbarItem,
   Search,
   Col,
@@ -63,6 +64,7 @@ Vue.use(Search)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Cell)
+Vue.use(Dialog)
 Vue.use(CellGroup)
 Vue.use(NavBar)
 Vue.use(Form)

@@ -21,6 +21,10 @@ const actions = {
         commit('SET_LIST', ordersListResp.data)
         return ordersListResp.data
     },
+    async get({ commit }, id) {
+        const ordersResp = await ordersApi.get(id)
+        return ordersResp.data
+    },
     async save({ commit }, data) {
         const ordersResp = await ordersApi.save(data)
         return ordersResp.data
