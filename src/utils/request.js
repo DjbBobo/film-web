@@ -12,9 +12,9 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // const token = getToken()
-    config.headers.userId = '1361258452256575490'
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMzYxMjU4NDUyMjU2NTc1NDkwIiwiaWF0IjoxNjEzOTE4MDI4LCJleHAiOjE2Mzk4MzgwMjh9.ERsXr11GiZM7Sit2Fh9rOcNFVXY1hObobI0PY4ZHUQswZ5UmaAYcr7fXx_PckPsaChJiAkUb3Ke8tTuiBbyZSQ'
+    const token = getToken()
+    // config.headers.userId = '1361258452256575490'
+    // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMzYxMjU4NDUyMjU2NTc1NDkwIiwiaWF0IjoxNjEzOTE4MDI4LCJleHAiOjE2Mzk4MzgwMjh9.ERsXr11GiZM7Sit2Fh9rOcNFVXY1hObobI0PY4ZHUQswZ5UmaAYcr7fXx_PckPsaChJiAkUb3Ke8tTuiBbyZSQ'
     if (token && token !== 'undefined') {
       config.headers.Authorization = token
     }
@@ -48,7 +48,7 @@ service.interceptors.response.use(
     }
     // if the custom code is not 100, it is judged as an error.
     if (res.code !== 200) {
-      Notify({ type: 'danger', message: res.msg || 'Error check your token or method' });
+      Notify({ type: 'danger', message: res.message || 'Error check your token or method' });
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res

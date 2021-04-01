@@ -54,6 +54,7 @@ import {
   Radio,
   CountDown
 } from 'vant'
+import axios from 'axios'
 
 
 Vue.use(Button)
@@ -116,5 +117,17 @@ new Vue({
       CITY: "正在定位",
       CITY_ID: ""
     }
+  },
+  mounted() {
+    axios.get('https://restapi.amap.com/v3/ip?output=json&key=45b7fcac6c846a0fc680b00e0afb47c9').then((res) => {
+      // console.log(res)
+      this.CITY = res.data.city.slice(0, res.data.city.length - 1)
+      this.$store
+        .dispatch("district/list", { shortName: res.data.city })
+        .then(res => {
+          if (res)
+            this.CITY_ID = res[0].id;
+        });
+    })
   }
 })

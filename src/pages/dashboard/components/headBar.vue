@@ -24,11 +24,11 @@ export default {
     };
   },
   mounted() {
-    if (this.$root.CITY == "正在定位") {
-      this.getLocationCity();
-    } else {
-      this.city = this.$root.CITY;
-    }
+    // if (this.$root.CITY == "正在定位") {
+    //   // this.getLocationCity();
+    // } else {
+    //   this.city = this.$root.CITY;
+    // }
   },
   methods: {
     goSearch() {
@@ -37,44 +37,44 @@ export default {
     goCity() {
       this.$router.push({ path: "/city" });
     },
-    getLocationCity() {
-      //定义获取城市方法
-      const geolocation = new BMap.Geolocation();
-      var _this = this;
-      // geolocation.getCurrentPosition(
-      //   function getinfo(position) {
-      //     console.log(position);
-      //     let city = position.address.city; //获取城市信息
-      //     let province = position.address.province; //获取省份信息
-      //     _this.$root.CITY = city.substring(0, city.length - 1);
-      //     _this.city = _this.$root.CITY;
-      //     _this.setCityIdByShortName(_this.$root.CITY);
-      //   },
-      //   function(e) {
-      //     _this.$root.CITY = "定位失败";
-      //   },
-      //   { provider: "baidu" }
-      // );
-      var myGeo = new BMap.Geocoder();
-      geolocation.getCurrentPosition(function(r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          var pt = r.point;
-          // 根据坐标得到地址描述
-          myGeo.getLocation(pt, function(result) {
-            if (result) {
-              var addComp = result.addressComponents;
-              // alert(addComp.province + "," + addComp.city);
-              _this.$root.CITY = addComp.city.substring(
-                0,
-                addComp.city.length - 1
-              );
-              _this.city = _this.$root.CITY;
-              _this.setCityIdByShortName(_this.$root.CITY);
-            }
-          });
-        }
-      });
-    },
+    // getLocationCity() {
+    //   //定义获取城市方法
+    //   const geolocation = new BMap.Geolocation();
+    //   var _this = this;
+    //   // geolocation.getCurrentPosition(
+    //   //   function getinfo(position) {
+    //   //     console.log(position);
+    //   //     let city = position.address.city; //获取城市信息
+    //   //     let province = position.address.province; //获取省份信息
+    //   //     _this.$root.CITY = city.substring(0, city.length - 1);
+    //   //     _this.city = _this.$root.CITY;
+    //   //     _this.setCityIdByShortName(_this.$root.CITY);
+    //   //   },
+    //   //   function(e) {
+    //   //     _this.$root.CITY = "定位失败";
+    //   //   },
+    //   //   { provider: "baidu" }
+    //   // );
+    //   var myGeo = new BMap.Geocoder();
+    //   geolocation.getCurrentPosition(function(r) {
+    //     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //       var pt = r.point;
+    //       // 根据坐标得到地址描述
+    //       myGeo.getLocation(pt, function(result) {
+    //         if (result) {
+    //           var addComp = result.addressComponents;
+    //           // alert(addComp.province + "," + addComp.city);
+    //           _this.$root.CITY = addComp.city.substring(
+    //             0,
+    //             addComp.city.length - 1
+    //           );
+    //           _this.city = _this.$root.CITY;
+    //           _this.setCityIdByShortName(_this.$root.CITY);
+    //         }
+    //       });
+    //     }
+    //   });
+    // },
     setCityIdByShortName(shortName) {
       this.$store
         .dispatch("district/list", { shortName: shortName })
