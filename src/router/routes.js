@@ -52,7 +52,7 @@ export default [
             {
                 path: '/mine',
                 meta: {
-                    isAuth: true
+                    isAuth: false
                 },
                 component: () => import('@/pages/mine')
             },
@@ -84,28 +84,28 @@ export default [
         path: '/seat',
         name: 'seat',
         meta: {
-            isAuth: true
+            isAuth: false
         },
         component: () => import('@/pages/seat')
     },
     {
         path: '/order',
         meta: {
-            isAuth: true
+            isAuth: false
         },
         component: () => import('@/pages/order')
     },
     {
         path: '/myOrder',
         meta: {
-            isAuth: true
+            isAuth: false
         },
         component: () => import('@/pages/myOrder')
     },
     {
         path: '/pay',
         meta: {
-            isAuth: true
+            isAuth: false
         },
         component: () => import('@/pages/pay')
     }

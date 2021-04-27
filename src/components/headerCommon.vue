@@ -16,8 +16,7 @@
 </template>
 
 <script>
-import BMap from "BMap";
-
+import axios from "axios";
 export default {
   props: ["search"],
   data() {
@@ -43,22 +42,21 @@ export default {
       this.$router.push({ path: "/city" });
     },
     getLocationCity() {
-      //定义获取城市方法
-      const geolocation = new BMap.Geolocation();
-      var _this = this;
-      geolocation.getCurrentPosition(
-        function getinfo(position) {
-          let city = position.address.city; //获取城市信息
-          let province = position.address.province; //获取省份信息
-          _this.$root.CITY = city.substring(0, city.length - 1);
-          _this.city = _this.$root.CITY;
-          _this.setCityIdByShortName(_this.$root.CITY);
-        },
-        function(e) {
-          _this.$root.CITY = "定位失败";
-        },
-        { provider: "baidu" }
-      );
+      axios
+        .get(
+          "https://restapi.amap.com/v3/ip?output=json&key=45b7fcac6c846a0fc680b00e0afb47c9"
+        )
+        .then(res => {
+          this.locationCity.shortName = res.data.city.slice(
+            0,
+            res.data.city.length - 1
+          );
+          this.$store
+            .dispatch("district/list", { shortName: res.data.city })
+            .then(res => {
+              if (res) this.locationCity.id = res[0].id;
+            });
+        });
     },
     setCityIdByShortName(shortName) {
       this.$store
