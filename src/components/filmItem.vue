@@ -15,13 +15,13 @@
               style="width:40px"
               :to="'/ticketCinema?filmId=' + filmId"
             >购票</van-button>
-            <van-button
+            <!-- <van-button
               v-if="type == 'wait' || type == '2'"
               type="info"
               size="mini"
               round
               style="width:40px"
-            >想看</van-button>
+            >想看</van-button>-->
           </van-col>
         </van-row>
       </template>

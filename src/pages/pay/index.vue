@@ -23,12 +23,12 @@
       <van-cell-group>
         <van-cell clickable @click="radio = '1'">
           <template #title>
-            <span class="custom-title">微信支付</span>
+            <span class="custom-title">支付宝支付</span>
             <van-tag type="danger">推荐</van-tag>
           </template>
           <template #icon>
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-weixinzhifu" />
+              <use xlink:href="#icon-zhifubao" />
             </svg>
           </template>
           <template #right-icon>
@@ -37,22 +37,34 @@
         </van-cell>
         <van-cell clickable @click="radio = '2'">
           <template #title>
-            <span class="custom-title">支付宝支付</span>
+            <span class="custom-title">微信支付</span>
           </template>
           <template #icon>
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-zhifubao" />
+              <use xlink:href="#icon-weixinzhifu" />
             </svg>
           </template>
           <template #right-icon>
             <van-radio name="2" />
           </template>
         </van-cell>
-        <van-cell title="测试支付" @click="testPay"></van-cell>
+        <van-cell clickable @click="radio = '3'">
+          <template #title>
+            <span class="custom-title">银联支付</span>
+          </template>
+          <template #icon>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-zhifupingtai-yinlian" />
+            </svg>
+          </template>
+          <template #right-icon>
+            <van-radio name="3" />
+          </template>
+        </van-cell>
       </van-cell-group>
     </van-radio-group>
 
-    <van-button class="pay-btn" type="warning" @click="goAliPay">
+    <van-button class="pay-btn" type="warning" @click="goPay">
       <van-row>
         <van-col>确认支付</van-col>
         <van-col>￥{{orders.price}}</van-col>
@@ -104,6 +116,26 @@ export default {
           this.orders = res[0];
         });
     },
+    goPay() {
+      if (this.radio == "1") {
+        this.goAliPay();
+      } else if (this.radio == "2") {
+        this.goAliPCPay();
+      } else if (this.radio == "3") {
+        this.testPay();
+      }
+    },
+    goAliPCPay() {
+      this.$toast.loading({
+        forbidClick: true
+      });
+      this.$store.dispatch("alipay/createWeb", this.orders.id).then(res => {
+        const div = document.createElement("div");
+        div.innerHTML = res;
+        document.body.appendChild(div);
+        document.forms[0].submit();
+      });
+    },
     goAliPay() {
       this.$toast.loading({
         forbidClick: true
@@ -113,14 +145,8 @@ export default {
         div.innerHTML = res;
         document.body.appendChild(div);
         document.forms[0].submit();
-        this.$toast.clear();
+        // this.$toast.clear();
       });
-      // this.$store.dispatch("alipay/createWeb", this.orders.id).then(res => {
-      //   const div = document.createElement("div");
-      //   div.innerHTML = res;
-      //   document.body.appendChild(div);
-      //   document.forms[0].submit();
-      // });
     },
     testPay() {
       this.$toast.loading({
@@ -132,7 +158,8 @@ export default {
           duration: 500
         });
         this.$toast.clear();
-        this.getOrderData(this.orders.id);
+        // this.getOrderData(this.orders.id);
+        this.$router.push({ path: "/myOrder" });
       });
     }
   }

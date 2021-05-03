@@ -21,7 +21,8 @@ export default {
   props: ["search"],
   data() {
     return {
-      city: ""
+      city: "",
+      locationCity: {}
     };
   },
   mounted() {

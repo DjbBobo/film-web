@@ -35,7 +35,7 @@
 
     <van-row class="seats">
       <van-row class="seat" v-for="(item,index) in sessionSeatList" :key="index">
-        <van-col class="row" span="1">{{index}}</van-col>
+        <van-col class="row" span="1">{{index + 1}}</van-col>
         <van-col class="seat-icon" span="23">
           <svg
             class="icon"

@@ -120,11 +120,12 @@ new Vue({
   },
   mounted() {
     axios.get('https://restapi.amap.com/v3/ip?output=json&key=45b7fcac6c846a0fc680b00e0afb47c9').then((res) => {
-      // console.log(res)
+      console.log(res)
       this.CITY = res.data.city.slice(0, res.data.city.length - 1)
       this.$store
-        .dispatch("district/list", { shortName: res.data.city })
+        .dispatch("district/list", { name: res.data.city })
         .then(res => {
+          console.log("城市查询结果:" + res)
           if (res)
             this.CITY_ID = res[0].id;
         });

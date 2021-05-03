@@ -65,6 +65,8 @@ export default {
         .then(res => {
           this.hotSwiperData = res.filter(item => item.position === 1);
           this.comingSwiperData = res.filter(item => item.position === 2);
+          this.comingSwiperData = this.comingSwiperData.sort(this.desc);
+          this.hotSwiperData = this.hotSwiperData.sort(this.desc);
         });
     },
     getFilmTypeList() {
@@ -75,6 +77,9 @@ export default {
     },
     goFilm(val) {
       this.$router.push({ path: "/film", query: { active: val } });
+    },
+    desc(a, b) {
+      return a.sort - b.sort;
     }
   }
 };

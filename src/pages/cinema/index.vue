@@ -2,10 +2,10 @@
   <div class="cinema-container">
     <header-common search="cinema" @getCinemaData="getCinemaData" />
 
-    <van-dropdown-menu>
+    <!-- <van-dropdown-menu>
       <van-dropdown-item v-model="value1" :options="option1" />
       <van-dropdown-item v-model="value2" :options="option2" />
-    </van-dropdown-menu>
+    </van-dropdown-menu>-->
     <cinema-item
       @click.native="goFilmCinema(item)"
       v-for="(item,index) in cinemaData"

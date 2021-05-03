@@ -88,7 +88,6 @@ export default {
       type: Array
     }
   },
-  created() {},
   components: {
     hotFilmItem,
     comingFilmItem
