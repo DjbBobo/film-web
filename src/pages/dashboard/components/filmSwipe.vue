@@ -1,86 +1,182 @@
 <template>
-    <div class="film-swipe-container">
-        <meta name="referrer" content="no-referrer">
-        <van-swipe :loop="false" :show-indicators="false" :width="90"  v-if="this.type === 'hot'">
-            <van-swipe-item>
-                <hot-film-item/>
-            </van-swipe-item>
-            <van-swipe-item></van-swipe-item>
-        </van-swipe>
-        <van-swipe :loop="false" :show-indicators="false" :width="90"  v-if="this.type === 'coming'">
-            <van-swipe-item>
-                <coming-film-item/>
-            </van-swipe-item>
-            <van-swipe-item></van-swipe-item>
-        </van-swipe>
-    </div>
+  <div class="film-swipe-container">
+    <meta name="referrer" content="no-referrer" />
+    <!-- 正在热映 -->
+    <van-swipe
+      class="film-swipe"
+      v-if="type==='hot'"
+      :loop="false"
+      :width="80"
+      :show-indicators="false"
+    >
+      <van-swipe-item class="film-swipe-item" v-for="(item,index) in hotSwiperData" :key="index">
+        <van-row class="film-image-row">
+          <van-col class="film-image-col" :span="24">
+            <van-image :src="item.imageUrl">
+              <h5 class="film-score">{{item.score}}</h5>
+            </van-image>
+          </van-col>
+        </van-row>
+        <van-row class="film-name-row">
+          <van-col :span="24" class="film-name-col">{{item.filmName}}</van-col>
+        </van-row>
+        <van-row class="film-btn-row">
+          <van-col :span="24" class="film-btn-col">
+            <van-button
+              type="danger"
+              round
+              size="small"
+              :to="'/ticketCinema?filmId=' + item.filmId"
+            >购票</van-button>
+          </van-col>
+        </van-row>
+      </van-swipe-item>
+      <van-swipe-item class="film-swipe-item"></van-swipe-item>
+    </van-swipe>
+    <!-- 即将上映 -->
+    <van-swipe
+      class="film-swipe"
+      v-if="type==='coming'"
+      :loop="false"
+      :width="80"
+      :show-indicators="false"
+    >
+      <van-swipe-item class="film-swipe-item" v-for="(item,index) in comingSwiperData" :key="index">
+        <van-row class="film-image-row">
+          <van-col class="film-image-col" :span="24">
+            <van-image :src="item.imageUrl">
+              <h5 class="film-score">{{item.personNum == 0 ? '':item.personNum + ' 人想看'}}</h5>
+            </van-image>
+          </van-col>
+        </van-row>
+        <van-row class="film-name-row">
+          <van-col :span="24" class="film-name-col">{{item.filmName}}</van-col>
+        </van-row>
+        <van-row class="film-date-row">
+          <van-col :span="24" class="film-date-col">{{formatDate(item.releaseTime)}}</van-col>
+        </van-row>
+        <van-row class="film-btn-row">
+          <van-col :span="24" class="film-btn-col">
+            <van-button
+              :color="item.status == 1 ? '#F9AF02':'#EBEDF0'"
+              round
+              size="small"
+              @click="wantLook(item,item.filmId)"
+            >{{item.status == 1 ? '想看':'已想看'}}</van-button>
+          </van-col>
+        </van-row>
+      </van-swipe-item>
+      <van-swipe-item class="film-swipe-item"></van-swipe-item>
+    </van-swipe>
+  </div>
 </template>
 
 <script>
-import hotFilmItem from '../../../components/hotFilmItem'
-import comingFilmItem from '../../../components/comingFilmItem'
+import hotFilmItem from "../../../components/hotFilmItem";
+import comingFilmItem from "../../../components/comingFilmItem";
+import { mapState } from "vuex";
 
 export default {
-    props: {
-        type: {
-            type: String
-        }
+  props: {
+    type: {
+      type: String
     },
-    components: {
-        hotFilmItem,
-        comingFilmItem
+    hotSwiperData: {
+      type: Array
     },
-     data() {
-    return {
-      images: [
-        'https://img.yzcdn.cn/vant/apple-1.jpg',
-        'https://img.yzcdn.cn/vant/apple-2.jpg',
-      ],
-    };
+    comingSwiperData: {
+      type: Array
+    }
   },
-}
+  components: {
+    hotFilmItem,
+    comingFilmItem
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    wantLook(item, filmId) {
+      this.$store.dispatch("film/wantLook", filmId);
+      // this.$emit("getMainSwiperDataList");
+      if (item.status == 1) {
+        item.personNum = item.personNum + 1;
+        item.status = 2;
+      } else {
+        item.personNum = item.personNum - 1;
+        item.status = 1;
+      }
+    },
+    formatDate(time) {
+      let date = new Date(time);
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return month + "月" + day + "日";
+    }
+  }
+};
 </script>
 
-<style lang="stylus" scope>
-.film-swipe-container .van-swipe .van-swipe-item{
-    width 100%
-    height 165px
-    text-align center
-    color red
-    margin-right 5px
+<style lang="stylus" scoped>
+.film-swipe {
+  width: 100%;
+  height: 200px;
 }
-.film-image .van-col{
-    height 100px
-    width 100%
-    position relative
+
+.film-swipe-item {
+  margin-right: 3px;
 }
-.film-image .van-col .image-content{
-    position absolute
-    bottom 0
-    margin 0
-    text-align left 
-    padding-left 4%
-    width 96%
-    border-radius 5px
-    box-shadow: 0 0 .25rem rgba(95, 95, 95, .48);
+
+.film-image-row {
+  height: 60%;
 }
-.film-image .van-col .van-image img{
-    height 100px
-    width 100%
-    border-radius 5px
+
+.film-image-row .film-image-col {
+  height: 100%;
 }
-.film-name .van-col{
-    height 20px
-    line-height 20px
-    font-size 10px
-    text-align left 
-    color #222
-    font-weight bold
+
+.film-image-row .film-image-col .van-image {
+  height: 100%;
+  position: relative;
+  border-radius: 4px;
 }
-.film-btn .van-col{
-    text-align left 
+
+.film-image-row .film-image-col .van-image .film-score {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  color: #E9B107;
+  box-shadow: 0 0 0.25rem rgba(95, 95, 95, 0.48);
 }
-.film-btn .van-col .van-button{
-    width 50%
+
+.film-name-row .film-name-col {
+  font-size: 13px;
+  color: #222;
+  font-weight: bold;
+}
+
+.coming-film-item-container .film-item .film-date .van-col {
+  font-size: 2px;
+  text-align: left;
+  color: #999999;
+}
+
+.film-image-row .film-image-col .van-image .film-score {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  color: #E9B107;
+  box-shadow: 0 0 0.25rem rgba(95, 95, 95, 0.48);
+}
+
+.film-name-row .film-name-col {
+  font-size: 13px;
+  color: #222;
+  font-weight: bold;
+}
+
+.film-date-row .film-date-col {
+  font-size: 2px;
+  color: #999999;
 }
 </style>

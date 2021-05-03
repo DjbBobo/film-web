@@ -4,7 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -14,6 +14,9 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
+  },
+  externals: {
+    "BMap": "BMap"
   },
   output: {
     path: config.build.assetsRoot,
@@ -31,6 +34,10 @@ module.exports = {
   },
   module: {
     rules: [
+      { //从这一段上面是默认的！不用改！下面是没有的需要你手动添加，相当于是编译识别scss!
+        test: /\.scss?$/,
+        loaders: ["style", "css", "sass"]
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
