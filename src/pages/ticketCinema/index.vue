@@ -112,7 +112,8 @@ export default {
       this.$store
         .dispatch("cinema/sesionCinemaList", {
           likeSessionStartTime: likeSessionStartTime,
-          cityId: this.$root.CITY_ID
+          cityId: this.$root.CITY_ID,
+          filmId: this.filmId
         })
         .then(res => {
           this.$toast.clear();
