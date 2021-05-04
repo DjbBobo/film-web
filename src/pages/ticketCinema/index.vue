@@ -111,7 +111,8 @@ export default {
     getSesionCinemaList(likeSessionStartTime) {
       this.$store
         .dispatch("cinema/sesionCinemaList", {
-          likeSessionStartTime: likeSessionStartTime
+          likeSessionStartTime: likeSessionStartTime,
+          cityId: this.$root.CITY_ID
         })
         .then(res => {
           this.$toast.clear();
