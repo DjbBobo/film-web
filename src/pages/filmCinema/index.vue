@@ -161,12 +161,14 @@ export default {
         .dispatch("session/cinemaFilmSessions", {
           cinemaId: this.cinemaId,
           filmId: this.currentFilm.id,
-          orderField: "sessionStartTime"
+          orderField: "sessionStartTime",
+          currentTime: this.getCurrentTime()
         })
         .then(res => {
           if (res == null) {
             this.sessionData = [];
             this.sessionDate = [];
+            this.$toast("暂无该电影场次信息");
             return;
           }
           this.sessionDate = res;
@@ -187,6 +189,34 @@ export default {
         .then(res => {
           this.sessionData = res;
         });
+    },
+    getCurrentTime() {
+      let date = new Date();
+      const year = date.getFullYear();
+      const month =
+        date.getMonth() + 1 < 9
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1;
+      const day = date.getDate() < 9 ? "0" + date.getDate() : date.getDate();
+      const hour =
+        date.getHours() < 9 ? "0" + date.getHours() : date.getHours();
+      const minute =
+        date.getMinutes() < 9 ? "0" + date.getMinutes() : date.getMinutes();
+      const second =
+        date.getSeconds() < 9 ? "0" + date.getSeconds() : date.getSeconds();
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second
+      );
     },
     formatDate(time) {
       let date = new Date(time);
