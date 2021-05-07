@@ -33,6 +33,10 @@ const actions = {
         commit('SET_LIST', sessionSeatListResp.data)
         return sessionSeatListResp.data
     },
+    async lockSessionSeatList({ commit }) {
+        const locksSessionSeatListResp = await sessionSeatApi.lockSessionSeatList()
+        return locksSessionSeatListResp.data
+    },
     async get({ commit }, id) {
         const sessionSeatResp = await sessionSeatApi.get(id)
         commit('SET_ITEM', sessionSeatResp.data)

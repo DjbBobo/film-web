@@ -9,7 +9,13 @@
         </van-cell>
       </template>
       <template #right>
-        <van-icon name="search" size="18" color="#ee0a24" class="search" @click="goSearch()" />
+        <van-icon
+          name="search"
+          size="18"
+          color="#ee0a24"
+          class="search"
+          @click="goSearch()"
+        />
       </template>
     </van-nav-bar>
   </div>
@@ -22,7 +28,7 @@ export default {
   data() {
     return {
       city: "",
-      locationCity: {}
+      locationCity: {},
     };
   },
   mounted() {
@@ -36,7 +42,7 @@ export default {
     goSearch() {
       this.$router.push({
         name: "search",
-        params: { placeHolder: this.search }
+        params: { placeHolder: this.search },
       });
     },
     goCity() {
@@ -47,27 +53,27 @@ export default {
         .get(
           "https://restapi.amap.com/v3/ip?output=json&key=45b7fcac6c846a0fc680b00e0afb47c9"
         )
-        .then(res => {
-          this.locationCity.shortName = res.data.city.slice(
-            0,
-            res.data.city.length - 1
-          );
+        .then((res) => {
+          this.city = res.data.city.slice(0, res.data.city.length - 1);
+          this.$root.CITY = this.city;
           this.$store
             .dispatch("district/list", { shortName: res.data.city })
-            .then(res => {
-              if (res) this.locationCity.id = res[0].id;
+            .then((res) => {
+              if (res) {
+                this.$root.CITY_ID = res[0].id;
+              }
             });
         });
     },
     setCityIdByShortName(shortName) {
       this.$store
         .dispatch("district/list", { shortName: shortName })
-        .then(res => {
+        .then((res) => {
           this.$root.CITY_ID = res[0].id;
           this.$emit("getCinemaData", this.$root.CITY_ID);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

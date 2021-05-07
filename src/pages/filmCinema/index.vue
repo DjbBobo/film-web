@@ -151,9 +151,13 @@ export default {
     getCinemaDetail(id) {
       this.$store.dispatch("cinema/get", id).then(res => {
         this.cinemaDetail = res;
-        this.currentFilm = res.filmList[this.current];
-        this.getCinemaFilmSessions();
-        this.initialSwiperIndex();
+        if (res.filmList) {
+          this.currentFilm = res.filmList[this.current];
+          this.getCinemaFilmSessions();
+          this.initialSwiperIndex();
+        } else {
+          this.$toast("暂无场次信息");
+        }
       });
     },
     getCinemaFilmSessions() {

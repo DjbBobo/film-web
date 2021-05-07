@@ -30,3 +30,10 @@ export function updateBatch(data) {
         data
     })
 }
+
+export function lockSessionSeatList() {
+    return request({
+        url: '/admin/api/sessionSeat/lockSessionSeatList',
+        method: 'get'
+    })
+}

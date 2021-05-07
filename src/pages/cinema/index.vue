@@ -8,7 +8,7 @@
     </van-dropdown-menu>-->
     <cinema-item
       @click.native="goFilmCinema(item)"
-      v-for="(item,index) in cinemaData"
+      v-for="(item, index) in cinemaData"
       :key="index"
       :cinemaName="item.name"
       :districtDetail="item.districtDetail"
@@ -20,13 +20,17 @@
 <script>
 import headerCommon from "../../components/headerCommon";
 import cinemaItem from "../../components/cinemaItem";
+import axios from "axios";
+
 export default {
   components: {
     headerCommon,
-    cinemaItem
+    cinemaItem,
   },
-  created() {
-    if (this.$root.CITY_ID != "") {
+  mounted() {
+    if (this.$root.CITY_ID == "") {
+      this.getLocationCity();
+    } else {
       this.getCinemaData(this.$root.CITY_ID);
     }
   },
@@ -37,14 +41,14 @@ export default {
       option1: [
         { text: "全部商品", value: 0 },
         { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
+        { text: "活动商品", value: 2 },
       ],
       option2: [
         { text: "默认排序", value: "a" },
         { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" }
+        { text: "销量排序", value: "c" },
       ],
-      cinemaData: []
+      cinemaData: [],
     };
   },
   methods: {
@@ -54,20 +58,37 @@ export default {
         query: {
           cinemaId: cinema.id,
           cinemaName: cinema.name,
-          cinemaDistrictDetail: cinema.districtDetail
-        }
+          cinemaDistrictDetail: cinema.districtDetail,
+        },
       });
     } /*  */,
     getCinemaData(cityId) {
       this.$toast.loading({
-        forbidClick: true
+        forbidClick: true,
       });
-      this.$store.dispatch("cinema/list", { cityId: cityId }).then(res => {
+      this.$store.dispatch("cinema/list", { cityId: cityId }).then((res) => {
         this.cinemaData = res;
         this.$toast.clear();
       });
-    }
-  }
+    },
+    getLocationCity() {
+      axios
+        .get(
+          "https://restapi.amap.com/v3/ip?output=json&key=45b7fcac6c846a0fc680b00e0afb47c9"
+        )
+        .then((res) => {
+          this.$root.CITY = res.data.city.slice(0, res.data.city.length - 1);
+          this.$store
+            .dispatch("district/list", { shortName: this.$root.CITY })
+            .then((res) => {
+              if (res) {
+                this.$root.CITY_ID = res[0].id;
+                this.getCinemaData(this.$root.CITY_ID);
+              }
+            });
+        });
+    },
+  },
 };
 </script>
 

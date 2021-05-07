@@ -116,7 +116,16 @@ export default {
     this.sessionEndTime = this.$route.query.sessionEndTime;
     this.hallName = this.$route.query.hallName;
     this.ticketPrice = this.$route.query.ticketPrice;
-    this.getSessionSeatList();
+
+    this.getLockSessionSeat().then(res => {
+      this.getSessionSeatList();
+      // if (res) {
+      //   this.callBackFlag = true;
+      //   res.forEach(item => {
+      //     this.chooseSeatList.push(item);
+      //   });
+      // }
+    });
   },
   data() {
     return {
@@ -134,7 +143,8 @@ export default {
       ticketPrice: "",
       sessionList: [],
       sessionSeatList: [],
-      chooseSeatList: []
+      chooseSeatList: [],
+      callBackFlag: false
     };
   },
   methods: {
@@ -149,6 +159,9 @@ export default {
         .then(res => {
           this.sessionSeatList = res;
         });
+    },
+    getLockSessionSeat() {
+      return this.$store.dispatch("sessionSeat/lockSessionSeatList");
     },
     onClickSeat(seatItem, event) {
       if (seatItem.status === 1) {
