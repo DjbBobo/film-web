@@ -106,6 +106,8 @@ export default {
             this.getSesionCinemaList(
               this.formatHead(this.sessionList[0].sessionStartTime)
             );
+          } else {
+            this.$toast("当前电影暂无场次信息");
           }
         });
     },
