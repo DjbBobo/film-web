@@ -37,10 +37,16 @@
       </van-card>
       <van-cell :title="'总价：'+item.price" :value="formatStatus(item.status)" />
     </van-cell-group>
+
+    <van-popup v-model="show" @open="openPopup">
+      <div id="qrCode" ref="qrCodeUrl"></div>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import QRCode from "qrcodejs2";
+
 export default {
   mounted() {
     // localStorage.setItem("userId", "1361258452256575490");
@@ -57,7 +63,9 @@ export default {
   },
   data() {
     return {
-      orderList: []
+      orderList: [],
+      show: false,
+      currentOrderId: ""
     };
   },
   methods: {
@@ -65,7 +73,29 @@ export default {
       this.$store.dispatch("orders/get", id).then(res => {
         if (res.status == 1) {
           this.$router.push({ path: "/pay", query: { orderId: id } });
+        } else if (res.status == 2) {
+          this.showPopup();
+          this.currentOrderId = res.id;
         }
+      });
+    },
+    showPopup() {
+      this.show = true;
+    },
+    openPopup() {
+      this.$nextTick().then(() => {
+        this.creatQrCode(this.currentOrderId);
+      });
+    },
+    creatQrCode(orderId) {
+      document.getElementById("qrCode").innerHTML = "";
+      this.qrcode = new QRCode(this.$refs.qrCodeUrl, {
+        text: orderId,
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
       });
     },
     formatStatus(status) {

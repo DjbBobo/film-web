@@ -52,7 +52,8 @@ import {
   List,
   RadioGroup,
   Radio,
-  CountDown
+  CountDown,
+  Popup
 } from 'vant'
 import axios from 'axios'
 
@@ -102,6 +103,7 @@ Vue.use(List);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(CountDown);
+Vue.use(Popup);
 
 Vue.config.productionTip = false
 
